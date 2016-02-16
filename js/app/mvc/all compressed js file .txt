@@ -1,0 +1,64 @@
+app.js:		app_view,app_model,app_controller
+jamal.core.all.js:	jamal.js ,view.js ,model.js ,controller.js
+
+jquery.all.js
+response.files.append(URL(r=request,c='static',f='jquery/ui/jquery.effects.core.js'))
+response.files.append(URL(r=request,c='static',f='jquery/jquery.metadata.js'))	
+response.files.append(URL(r=request,c='static',f='jquery/jquery.color.js'))
+response.files.append(URL(r=request,c='static',f='jquery/jquery.address-1.2.2.js'))
+response.files.append(URL(r=request,c='static',f='jquery/jquery.modalbox.js'))
+response.files.append(URL(r=request,c='static',f='jquery/jquery.corner.js'))
+response.files.append(URL(r=request,c='static',f='jquery/jquery.imagesQ.js'))
+response.files.append(URL(r=request,c='static',f='jquery/jquery.fancyclock.js'))
+response.files.append(URL(r=request,c='static',f='jquery/jquery.ui.datepicker.js'))	
+
+
+
+app_mvc:    	blog.js portfolio.js nav.js
+allcomponents.js:	address.js animstack.js debugutil.js headerCatcher.js
+
+
+todoList:
+about content
+blog content
+navweb
+flashmvc update!
+
+
+
+after finding a job
+wheel chair design
+web2py , jamal notes
+blog gallery component
+
+
+
+
+
+
+
+
+
+http://www.alwaysdata.com
+Your account is created!
+
+You can now:
+connect to the administration interface using email 
+
+dharmareveal@gmail.com ;
+password: @password
+
+
+log in using FTP address 
+
+ftp.alwaysdata.com and login 4UdESIGN ;
+
+SSH log in using the address ssh.alwaysdata.com and login 4UdESIGN. You must first activate your account in the admin interface;
+access your site at 
+
+http://4UdESIGN.alwaysdata.net/.
+
+
+
+
+

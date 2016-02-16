@@ -1,0 +1,40 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+
+
+def Callable(__init__):
+	def Class():
+		def obj():
+			Class.prototype.__call__.apply(this,arguments)
+		obj.__proto__ = Class.prototype
+		obj.__name__ = __init__.name
+		obj.__init__ = __init__
+		__init__.apply(obj.arguments)
+		return obj
+	Class.prototype.__init__ = __init__
+	return Class
+
+
+
+
+class API(object):
+	def __init__(self):
+		self.prop = 'oweifjiefj'
+		self.data = []
+		self.tags = ['HTML','HTML5','CSS']
+	def __call__(self, *args):
+		console.log(*args)
+	def boss(self,*args):
+		console.log(self.prop,*args)
+
+a = API()
+a('.call() invacation')
+a.boss('.boss() invocation')
+
+
+
+
+
+
+

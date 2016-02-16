@@ -1,0 +1,754 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import console
+import arguments
+import require
+import RegExp
+import stdlib
+import stdlib2
+
+__author__ = 'gordiaknot'
+JamalInstance = 'rapyd'
+
+#customlib = require('./customlib')
+#stdlib = require('./stdlib')
+#stdlib2 = require('./stdlib2')
+
+#console.log('stdlib = ',stdlib)
+#console.log('stdlib2 =- ',stdlib2)
+#console.log('cusomlib = ',customlib)
+
+#dict = stdlib.dict
+
+def isEmpty (n):
+	if type( n ) == 'object':
+		if len( n ) == 0: return True
+		for key in dict.keys( n ):
+			return False
+		return True
+
+	if type( n ) == 'string':
+		if n.strip( ):return False
+		else:return True
+
+	if n:return False
+	else:return True
+def cls (cls,*args):
+	tmp = ''
+	for i in range( 1, len( arguments ) ):
+		tmp += 'arguments[' + i + '],'
+	fn = arguments[0]
+	ins = eval( 'new fn(' + tmp[0:-1] + ')' )
+	return ins
+def set_scope(module):
+	def scope(v):
+		m = eval(module)
+		if v:return m.prototype[v]
+		else: return m.prototype
+	scope.name = module
+	return scope
+def module (module):
+	def getAllExcept(lst,module):
+		def wrapper():
+			name = module.name
+			filter = lst
+			tmp = {}
+			m = eval(name).prototype
+			for k,v in dict.items(m):
+				is_k_in_filter = k in filter
+				if not is_k_in_filter:
+					tmp[k] = v
+			return tmp
+		return wrapper
+	if isEmpty( module.prototype ):
+		data = module( )
+		data.ALL = getAllExcept(['ALL','scope'],module)
+		filter = ['arguments','caller','length','name','prototype','__proto__']
+		for key,value in dict.items(data):
+			if key == 'scope':
+				for k,v in dict.items(value):
+					is_k_in_filter = k in filter
+					if not is_k_in_filter:
+						console.log('scope var..',k,v)
+						data[k] = v
+
+		module.prototype = data		# expose module members to module prototype
+		return module.prototype
+	else:
+		return module.prototype
+
+def class_properties (cls, props):
+	if not cls.prototype.__classproperty__:
+		console.log( 'set class properties:::' )
+		for k, v in dict.items( props ):
+			setattr( cls.prototype, k, v )
+			console.log( k, v )
+		cls.prototype.__classproperty__ = True
+
+class RapydWeb:
+	prototype = ''
+	browser = ''
+	version = '.4'
+	name = ''
+	action = ''
+	current = config = events = initActions = m = c = v = __instance__ = { }
+	debug = False
+	c = ''
+	m = ''
+	v = ''
+
+	def __init__ (self, init):
+		# due to the characteristic of javascript prototype that constructor was called
+		# not only when user instantiate it but also when inheritance from it's sub classes
+		# so we need make a trick to prevent constructor called by its sub class
+		if init:
+			# declare class properties instead of instance properties
+			# for easy access
+			class_properties( RapydWeb,
+							  {
+							  'm': [],
+							  'v': [],
+							  'c': [],
+							  'action': 'temp',
+							  'debug': 'debug',
+							  'components': [],
+							  'config': [],
+							  '__instance__': { }
+							  } )
+			# instance initiate code here '''
+			self.__instance__['RapydWeb'] = self
+
+	def getJamalInstance (self):
+		return eval( JamalInstance )
+
+	def instanceinit (self):
+		self.__instance__['RapydWeb'] = self
+
+	def start (self):
+		pass
+
+	def configure (self):
+		''' initialize all configuration'''
+		pass
+
+	def log (self):
+		console.log( self.log.caller.name, arguments )
+
+	def error (self):
+		console.error( self.error.caller.name, arguments )
+
+	def __linkJamalProto__ (self, successor):
+		successor.__proto__ = eval( JamalInstance )
+
+	def __linkMVCMediatorProto__ (self, successor):
+		pass
+
+	# call from it's successor
+	def __actionInit__ (self, hyper_successor, name, sub_successor):
+		self.checkActionsAvailable( name, sub_successor )
+		if not hyper_successor.__actions__[name]: hyper_successor.__actions__[name] = { }
+		self.log( '__actions__ = ', hyper_successor.__actions__ )
+		self.log( 'successor actions = ', sub_successor.actions )
+
+		if not hyper_successor.name == 'View':
+			for action in sub_successor.actions:
+				hyper_successor.__actions__[name][action] = self.actionPropStructure( )
+		else:
+			for action in sub_successor.actions:
+				hyper_successor.__actions__[name][action] = self.viewPropStructure( )
+
+	# call from it's successor
+	def __components_init__ (self, hyper_successor, name, sub_successor):
+		if sub_successor.components:
+			if not hyper_successor.__components__[name]: hyper_successor.__components__[name] = []
+			hyper_successor.__components__[name] = sub_successor.components
+
+	def actionPropStructure (self):
+		r = { 'views': [], 'props': { } }
+		return r
+
+	def viewPropStructure (self):
+		r = { 'views': [], 'props': { } }
+		return r
+
+	def checkActionsAvailable (self, name, successor):
+		self.log( name, successor )
+		self.log( successor.actions )
+		for action in successor.actions:
+			if not successor[action]:
+				self.error( 'actions [{0}] not exists', action )
+				return False
+
+
+			#@Todo :
+			# Garbage collection
+
+class Controller( RapydWeb ):
+	__actions__ = __components__ = ''
+
+	def __init__ (self, init):
+		# due to the characteristic of javascript prototype that constructor was called
+		# not only when user instantiate it but also when inheritance from it's sub classes
+		# so we need make a trick to prevent constructor called by its sub class
+		if init:
+			# instance initiate code here
+			# change inheritance from class into instance
+			self.__proto__ = RapydWeb.prototype.__instance__['RapydWeb']
+			# for easy access
+			RapydWeb.prototype.__instance__['Controller'] = self
+			self.__classname__ = 'Controller'
+			self.__components__ = { }
+			self.__actions__ = { }
+
+	def init (self, name, successor):
+		'''
+		init alwasys call from its successor:
+
+		originally this scope of self was route to Controller class not instance
+		we need to access Controller instance from its successor instead of Controller class
+		so, we changed the iheritance from class into instance in above __init__ section
+		'''
+		self.__components_init__( self, name, successor )
+		self.__actionInit__( self, name, successor )
+
+	def __getattr__ (self, item):
+		print item
+
+	def __get__ (self, instance, owner):
+		print instance, owner
+
+	def __beforAction (self, f, *args):
+		self.beforeAction( f, args )
+
+	def beforeAction (self, f, *args):
+		pass
+
+	def afterAction (self, f, *args):
+		pass
+
+	def __afterAction (self, f, *args):
+		self.__startRender( f, args )
+
+	def __startRender (self):
+		pass
+
+class View( RapydWeb ):
+	__actions__ = __components__ = ''
+
+	def __init__ (self, init):
+		# due to the characteristic of javascript prototype that constructor was called
+		# not only when user instantiate it but also when inheritance from it's sub classes
+		# so we need make a trick to prevent constructor called by its sub class
+		if init:
+			# instance initiate code here
+			# change inheritance from class into instance
+			self.__proto__ = RapydWeb.prototype.__instance__['RapydWeb']
+			# for easy access
+			RapydWeb.prototype.__instance__['View'] = self
+			self.__classname__ = 'View'
+			self.__components__ = { }
+			self.__actions__ = { }
+
+	def init (self, name, successor):
+		'''
+		init alwasys call from its successor:
+
+		originally this scope of self was route to Controller class not instance
+		we need to access Controller instance from its successor instead of Controller class
+		so, we changed the iheritance from class into instance in above __init__ section
+		'''
+		self.__components_init__( self, name, successor )
+		self.__actionInit__( self, name, successor )
+
+	def beforeRender (self, f, *args):
+		pass
+
+	def afterRender (self, f, *args):
+		pass
+
+class Model( RapydWeb ):
+	__components__ = __classname__ = ''
+
+	def __init__ (self, init):
+		# due to the characteristic of javascript prototype that constructor was called
+		# not only when user instantiate it but also when inheritance from it's sub classes
+		# so we need make a trick to prevent constructor called by its sub class
+		if init:
+			# instance initiate code here
+			# change inheritance from class into instance
+			self.__proto__ = RapydWeb.prototype.__instance__['RapydWeb']
+			# for easy access
+			RapydWeb.prototype.__instance__['Model'] = self
+			self.__classname__ = 'Model'
+			self.__components__ = { }
+
+	def init (self, name, successor):
+		'''
+		init alwasys call from its successor:
+
+		originally this scope of self was route to Controller class not instance
+		we need to access Controller instance from its successor instead of Controller class
+		so, we changed the iheritance from class into instance in above __init__ section
+		'''
+		self.__components_init__( self, name, successor )
+
+	def beforeSend (self, f, *args):
+		pass
+
+	def afterSend (self, f, *args):
+		pass
+
+	def beforeSave (self, f, *args):
+		pass
+
+	def afterSaver (self, f, *args):
+		pass
+
+class Mediator( RapydWeb ):
+	def __init__ (self, init):
+		# due to the characteristic of javascript prototype that constructor was called
+		# not only when user instantiate it but also when inheritance from it's sub classes
+		# so we need make a trick to prevent constructor called by its sub class
+		if init:
+			# instance initiate code here
+			# change inheritance from class into instance
+			self.__proto__ = RapydWeb.prototype.__instance__['RapydWeb']
+			# for easy access
+			RapydWeb.prototype.__instance__['Mediator'] = self
+			self.__classname__ = 'Mediator'
+
+	def test (self):
+		print 'mediator test'
+
+	def test2 (self):
+		print 'mediator test2'
+
+#################################################
+##		I M P L E M E N T A T I O N
+#################################################
+
+# Mediators are components
+# to use it must declare in controller
+class HeaderMediator( Mediator ):
+	def __init__ (self, init):
+		if init:
+			# change inheritance from class into instance
+			self.__proto__ = RapydWeb.prototype.__instance__['Mediator']
+			RapydWeb.prototype.__instance__['HeaderMediator'] = self
+
+	def catchHeader (self, header):
+		pass
+
+	def rewriteHeader (self):
+		pass
+
+class ViewMediator( Mediator ):
+	def viewName_to_ControllerActionName (self):
+		'''
+		 bind view to controller action
+		'''
+
+class AddressMediator( Mediator ):
+	# fake code
+	def __init__ (self, init):
+		if init:
+			# change inheritance from class into instance
+			self.__proto__ = RapydWeb.prototype.__instance__['Mediator']
+			RapydWeb.prototype.__instance__['AddressMediator'] = self
+
+	def suspendRediret (self):
+		pass
+
+	def redirectTo (self):
+		pass
+
+	def historyNext (self):
+		pass
+
+	def historyPrev (self):
+		pass
+
+	def getHistories (self):
+		pass
+
+	def onAddressChange (self):
+		pass
+
+class BlogController( Controller ):
+	# fake code
+	actions = ['index', 'viewArticles', 'viewByTags']
+
+	def __init__ (self, init):
+		if init:
+			# change inheritance from class into instance
+			self.__proto__ = RapydWeb.prototype.__instance__['Controller']
+			RapydWeb.prototype.__instance__['BlogController'] = self
+
+			self.actions = ['index', 'viewArticles', 'viewByTags']
+			self.components = ['modalbox']
+			self.init( 'BlogController', self )
+
+	def index (self):
+		pass
+
+	def viewArticles (self):
+		pass
+
+	def viewByTags (self):
+		pass
+
+class VoclistController( Controller ):
+	actions = ['vocHome', 'vocSentence', 'vocIndex']
+
+	def __init__ (self, init):
+		if init:
+			RapydWeb.prototype.__instance__['VoclistController'] = self
+			self.__proto__ = RapydWeb.prototype.__instance__['Controller']
+
+			self.actions = ['vocHome', 'vocSentence', 'vocIndex']
+			self.components = ['modalbox']
+			self.init( 'VoclistController', self )
+
+	def vocIndex (self):
+		pass
+	def vocSentence (self):
+		pass
+	def vocHome (self):
+		pass
+
+class BlogView( View ):
+	def __init__ (self, init):
+		if init:
+			# change inheritance from class into instance
+			self.__proto__ = RapydWeb.prototype.__instance__['View']
+			RapydWeb.prototype.__instance__['BlogView'] = self
+			self.components = ['modalbox']
+			self.init( 'BlogView', self )
+
+	def index (self):
+		pass
+
+	def viewArticles (self):
+		pass
+
+	def viewByTags (self):
+		pass
+
+#############################################
+####
+###########################################
+# every html file or html block could be a template
+# each template was automatically or manualy mapped to specific action_views:
+#		automatica map:
+#			search specific html element id and binding it to action_views
+#		manual map:
+#			repel automatic mapping and set it manualy
+
+class Template( View ):
+	def __init__ (self):
+		pass
+
+# ViewComponent is automatically or manualy fetched from Rapydml definition::
+#		Automatic:
+#			any definitions under setComponents: would parsed automaticaly by ViewComponent
+#		Manualy:
+#			repel automatic mapping and set it manaualy
+
+
+class ViewComponent( View ):
+
+	def __init__ (self,init):
+		if  init:
+			self.setAttrWithOnchangedCharacteristic(self,'test','test value')
+			self.setAttrWithOnchangedCharacteristic(self,'test2','set_from_callback value')
+	def __setattr__(self, key, value):
+		pass
+
+	def setAttrWithOnchangedCharacteristic(self,attr,value):
+		obj = {'value':value,'onChange':[]}
+		self.set(attr,obj)
+
+		def setter_callback(instance,attr):
+			def wrapper(value):
+				instance.onChange(attr,value)
+			return wrapper
+
+		def getter_callback(instance,attr):
+			def wrapper(value):
+				return instance.get(attr)
+			return wrapper
+
+		self.__defineSetter__(attr,setter_callback(self,attr))
+		self.__defineGetter__(attr,getter_callback(self,attr))
+		return obj
+
+	def isWatchObject(self,value):
+		if not type(value) == 'object':return False
+		value_in_dict = 'value' in dict.keys(value)
+		onchange_in_dict = 'onChange' in dict.keys(value)
+		console.log('[ViewComp][isWatchObject] value_in_dict, onchange_in_dict = ',value_in_dict,onchange_in_dict)
+		return value_in_dict or onchange_in_dict
+
+	# set Watch object
+	def set(self,attr,value):
+		#if self.isWatchObject(value):
+		self['_'+attr] = value
+		#	return
+		#else:
+			#raise "invalid watch object format when using set"
+
+	# get Watch object
+	def get(self,attr):
+		return self['_'+attr]
+
+	def onChange(self,attr,value):
+		original_value = self.get(attr)
+		console.info('[onChange] origianal value = ',original_value)
+		if not self.isWatchObject(original_value):
+			raise '[TypeError] attribute: "'+ attr+'" is not a valid watch object'
+		on_change_register_list = original_value.onChange
+
+		# set values in onChange list
+		for hash in on_change_register_list:
+			if 'condition' in dict.keys(hash):
+				console.info('[onChange][set onchange list] set var with condition, attr = ',attr)
+				self.processOnchangeConditions(hash,attr,value)
+			else:
+				console.info('[onChange][set onchange list] set var, attr = ',attr,'value = ',value)
+				target 		= hash['target']
+				target_attr  = hash['attr']
+				target.set(target_attr,value)
+
+		# set value
+		console.log('[onChange][set var] attr = ',attr,'value = ',value,'target = ',target,'target_attr = ',target_attr)
+		obj = self.get(attr)
+		obj.value = value
+		self.set(attr,obj)
+
+	def processOnchangeConditions(self,con,attr,value):
+		'''
+		rapydscript if elif else clause structure::
+	   {'else_clause': {'setted': bt1.name, 'pass': '', 'setter': "'final'"},
+		'elif_clause': [{
+				'setted'	: _state.name, 'pass': '',
+				'condition'	: [_state.state, ' == ', "'ccc'"],
+				'setter'	: "'anaother';"},
+
+				{'setted'	: bt1.name, 'pass': '',
+				'condition'	: ["_state.state = 'ddd'"],
+				'setter'	: "'anoather elif';"}],
+
+		'if_clause':
+				{'setted'	: _state.name, 'pass': '',
+				'condition'	: [_state.state, ' == ', "'aaa'"],
+				'setter'	: "'pressed';"}})
+
+		python if else clause structure
+		{'if_setter'	: "'pressed'",
+		'if_con'		: [_state.state, ' == ', "'aaa'"],
+		'else_setter'	: "'abc'",
+		'if_setted'		: _state.name})'''
+		def get_condition(con_lst):
+			prop_a,operator,prop_b = con_lst		# setted, ==, setter
+			condition = prop_a+operator + prop_b
+			return eval(condition)
+		# rapydscript if elif else clause
+		if con.if_clause:
+			for key in dict.keys(con):
+				current = con[key]
+				_condition = current['condition']
+				_pass = current['pass']
+				condition = get_condition(_condition)
+				# else clause doesnt have condition
+				# if elif clause
+				if condition or not isEmpty(_condition):
+					# process_general_config condition
+					if not _pass:
+						setted 	= current['setted']
+						setter 	= current['setter']
+						if self.isWatchObject(setter): v = setter.value
+						else: v = setter
+						if self.isWatchObject(setted): setted.value = v
+						else: raise 'setted must be a referenced watch object not a'+ type(setted)
+						continue
+					else:
+						continue
+		# python if else clause
+		elif con.if_con:
+			_condition 	= current['condition']
+			setted 		= current['if_setted']
+			condition 	= get_condition(_condition)
+			if condition: setter = current['if_setter']
+			else: setter = current['else_setter']
+			if self.isWatchObject(setter): v = setter.value
+			else: v = setter
+			if self.isWatchObject(setted): setted.value = v
+			else: raise 'setted must be a referenced watch object not a'+ type(setted)
+
+	def registCondition(self,register):
+		con = register.rapyd or register.python
+		# find for instance.attribute in string
+		pattern = RegExp("([\w]+[.][\w]+)")
+		# process_general_config rapydscript if elif else clause
+		if con.if_clause:
+			# if elif clause [rapydscript if else clause]
+			_con = con.if_clause.condition
+			prop_a, operator, prop_b = _con
+
+			if not con.if_clause['pass']:
+				setted = con['setted']
+				setter = con['setter']
+			else:
+				setted = setter = ''
+			# find out whether properties is referenced to instance or not
+			if prop_a.match(pattern): prop_a.onChange.push({'condition':con,'setted':setted,'setter':setter})
+			if prop_b.match(pattern): prop_b.onChange.push({'condition':con,'setted':setted,'setter':setter})
+			return
+		#if else clause [python]
+		else:
+			# if elif clause [rapydscript if else clause]
+			_con = con.if_con
+			prop_a, operator, prop_b = _con
+			if not con['pass']:
+				setted = con['if_setted']
+				setter = con['if_setter']
+			else:
+				setted = setter = ''
+			if 'self.' in prop_a: prop_a.onChange.push({'condition':con,'setted':setted,'setter':setter})
+			if 'self.' in prop_b: prop_b.onChange.push({'condition':con,'setted':setted,'setter':setter})
+
+	def setattr(self,attr,value):
+		if type(attr) == 'string':
+			if self.isIfStatement(value):
+				self.registCondition(value)
+			if self.isWatchObject(value):
+				value.onChange.push({'target':self,'attr':attr})
+			else:
+				self.set(attr,value)
+		else:
+			raise 'Invalid attribute type'
+
+	def changeState(self,state):
+		pass
+
+	def onStateChanged(self):
+		pass
+
+	def isIfStatement(self,value):
+		if type(value) == 'object':
+			condition = value['python'] or value['rapyd']
+			if not condition: return False
+			if type(condition) == 'object':
+				_if = ['if_con','if_setter','if_setted','if_clause','elif_clause','else_clause']
+				for key in dict.keys(condition):
+					if key in _if:
+						return True
+		return False
+
+class States:
+	states=[]
+
+	def addState(self):
+		self.states.push({'animation':[],'name':'','setattr':[],'conditions':[]})
+
+	def setAttr(self,attr,value):
+		self.states[-1]['setattr'].push([attr,value])
+
+	def setName(self,name):
+		self.states[-1][name] = name
+		self.states[name] = self.states[-1]
+
+	def setTarget(self,target):
+		target['States'] = self
+
+	def watch(self,attr,con):
+		condition = con.python or con.rapyd
+		self.states[-1]['conditions'].push(condition)
+
+	def setAnime(self):
+		anim = Animation()
+		self.states[-1]['animation'] = anim
+		return anim
+
+class Animation:
+	def setAttr(self,attr,*args):
+		setattr(self,attr,*args)
+	def setTwn(self,tween_code):
+		pass
+	def startAnime(self,target):
+		pass
+
+class Button( ViewComponent ):
+	def viewCompInit (self):
+		pass
+
+	def addButton (self, instance, group):
+		pass
+
+	def setDefaultName (self, name):
+		pass
+
+class CustomButton(Button):
+	def __init__(self,data):
+		def clearbt(self):
+			for bt in self.groups[self]:
+				if bt.id != self.id:
+					bt.clear()
+		def clear(self):
+			self.state == self.States.default
+		def action(self):
+			for i in range(10):
+				print 123123
+
+
+rapyd = RapydWeb( 'init' )
+
+console.log( 'RapydWeb instance = ', RapydWeb.__instance__ )
+console.log( 'rapyd instance = ', rapyd.__instance__ )
+console.log( 'rapyd =', rapyd )
+
+rapyd.c = Controller( 'init' )
+rapyd.m = Model( 'init' )
+rapyd.v = View( 'init' )
+rapyd.mediator = Mediator( 'init' )
+rapyd.c.blog = BlogController( 'init' )
+rapyd.c.voclist = VoclistController( 'init' )
+
+rapyd.mediator.address = AddressMediator( 'init' )
+rapyd.mediator.header = HeaderMediator( 'init' )
+
+console.log( '------------ start -----------' )
+console.log( rapyd )
+
+console.log( '------------ test for view component -----------' )
+
+
+v = ViewComponent()
+v.setAttrWithOnchangedCharacteristic('test_setter',123)
+v.setAttrWithOnchangedCharacteristic('set_from_callback','bbb')
+console.log('set "setter" and "set_from_callback" as watch object')
+console.log('')
+console.log('default value of 		test_setter 		= ',v.test_setter)
+console.log('default value of 		set_from_callback 	= ',v.set_from_callback)
+console.log('')
+console.log('set test_setter to "value1"')
+v.test_setter = "value1"
+console.log("set set_from_callback's reference to test_setter")
+v.setattr('set_from_callback',v.test_setter)
+console.log('read value of "test_setter" 		= ',v.test_setter)
+console.log('read value of "set_from_callback" 	= ',v.set_from_callback)
+console.log('')
+console.log("alter value of test_setter to 'value2', to see if set_from_callback value changes!")
+
+v.test_setter = 'value2'
+console.log('set_from_callback value = ',v.set_from_callback ,' v.test_setter = ',v.test_setter)
+
+
+#v.state = 'ccc'
+#v.setattr('setattr',test_consition)
+#console.log('test condition......self.name = ',v.name)
+
+
+
+
+

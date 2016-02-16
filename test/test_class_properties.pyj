@@ -1,0 +1,78 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+def class_properties (cls, props):
+	if not cls.prototype.__classproperty__:
+		def getter(_cls,k):
+			def wrapper():
+				return _cls.prototype[k]
+			return wrapper
+		def setter(_cls,k):
+			def wrapper(value):
+				_cls.prototype[k] = value
+			return wrapper
+
+		for k,v in dict.items(props):
+			console.log(k,v)
+			cls.prototype[k] = v
+			cls.__defineGetter__(k,getter(cls,k))
+			cls.__defineSetter__(k,setter(cls,k))
+		cls.prototype.__classproperty__ = True
+
+def classprop_init(f):
+	eval('new f("classprop_init")')
+	return f
+
+@classprop_init
+class Super:
+	def __init__(self):
+		if arguments[0] == 'classprop_init':
+			self.__instance__ = {}
+			class_properties(Super,self)
+		else:
+			pass
+
+@classprop_init
+class CssStyle:
+	def __init__(self):
+		if arguments[0] == 'classprop_init':
+			# defining class properties
+			self.HTML_BORDER_FAMILY = ['border', 'border-top', 'border-bottom', 'border-left',
+										   'border-right', 'border-width', 'border-style']
+			self.HTML_BACKGROUND_FAMILY = ['background', 'background-color', 'background-image']
+			self.HTML_POSITIONING_FAMILY = ['position', 'left', 'right', 'top', 'bottom', 'z-index',
+											'pos', 'pos_hint', 'float', 'overflow', 'x', 'y', 'z']
+			self.HTML_APPEARANCE_FAMILY = ['width', 'height', 'size', 'size_hint']
+			self.HTML_TEXT_FAMILY = ['font-family', 'font-size', 'color', 'font-weight', 'font-style',
+									 'text-decoration', 'text-align', 'line-height', 'letter-spacing',
+									 'text-indent', 'text-transform', 'vertical-align']
+			class_properties(CssStyle,self)
+		else:
+			# real constructor
+			pass
+	def setvar(self,v):
+		self.HTML_APPEARANCE_FAMILY.append(v)
+	def test2(self):
+		pass
+
+CssStyle.HTML_APPEARANCE_FAMILY				# output: ["width","height","size","size_hint"]
+css1 = CssStyle()
+css1.HTML_APPEARANCE_FAMILY					# output: ["width","height","size","size_hint"]
+css1.HTML_APPEARANCE_FAMILY	= ['changeprop']
+CssStyle.HTML_APPEARANCE_FAMILY				# output: ["width","height","size","size_hint"]
+CssStyle.HTML_APPEARANCE_FAMILY = []		# empty HTML_APPEARANCE_FAMILY
+css2 = CssStyle()
+css2.HTML_APPEARANCE_FAMILY					# output: []
+
+
+
+# can't use regex pattern in raw string, only javascript /...../ regex pattern are allowed
+pattern = new RegExp("(?:\a\b\c\d\e\a\f\g\h\i\j\k\l\m\o\p\q\r\s\t\v\w\y\z)","g")
+pattern = new RegExp("(?:^(\\w+)[\\s]*[=][\\s]*new[\\s]*(\\w+)() western","g")
+pattern = new RegExp("(?:^(\w+)[\s]*[=][\s]*new[\s]*(\w+))","g")
+pattern = eval(pattern)
+# can't compile any string contains \x or \u
+# it shows WARN: ERROR: Invalid hex-character pattern in string
+#s = "hi mon I'll be there\x"
+#s = "hi mon I'll be there\u"
+
+

@@ -1,0 +1,163 @@
+
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# import console
+import stdlib
+import stdlib2
+
+def isEmpty (n):
+	if type( n ) == 'object':
+		if len( n ) == 0: return True
+		for key in dict.keys( n ):
+			return False
+		return True
+
+	if type( n ) == 'string':
+		if n.strip( ):return False
+		else:return True
+
+	if n:return False
+	else:return True
+def cls (cls,*args):
+	tmp = ''
+	for i in range( 1, len( arguments ) ):
+		tmp += 'arguments[' + i + '],'
+	fn = arguments[0]
+	ins = eval( 'new fn(' + tmp[0:-1] + ')' )
+	return ins
+def set_scope(module):
+	def scope(v):
+		m = eval(module)
+		if v:return m.prototype[v]
+		else: return m.prototype
+	scope.name = module
+	return scope
+
+
+def module (module):
+	def getAllExcept(lst,module):
+		def wrapper():
+			name = module.name
+			filter = lst
+			tmp = {}
+			m = eval(name).prototype
+			for k,v in dict.items(m):
+				is_k_in_filter = k in filter
+				if not is_k_in_filter:
+					tmp[k] = v
+			return tmp
+		return wrapper
+	if isEmpty( module.prototype ):
+		data = module( )
+		data.ALL = getAllExcept(['ALL','scope'],module)
+		filter = ['arguments','caller','length','name','prototype','__proto__']
+		for key,value in dict.items(data):
+			if key == 'scope':
+				for k,v in dict.items(value):
+					is_k_in_filter = k in filter
+					if not is_k_in_filter:
+						console.log('scope var..',k,v)
+						data[k] = v
+
+		module.prototype = data		# expose module members to module prototype
+		return module.prototype
+	else:
+		return module.prototype
+
+
+
+# moduleA
+def moduleA ():
+	scope = set_scope('moduleA')
+	# declare module-scope variables
+	scope.module_variableB 	= 2
+	scope.module_variableA 	= 1
+
+	class RapydWeb:
+		def echo(self,s):
+			if self.debug:
+				return s
+	RapydWeb.prototype.debug = False	# debug mode [class property]
+
+	class Controller( RapydWeb ):
+		def get_module_variableA(self):
+			console.log("\t[moduleA][Controller][Get] module_variableA = ",scope.module_variableA)
+		def set_module_variableA(self,value):
+			console.log("\t[moduleA][Controller][Set] set moduleA's module_variableA to",value)
+			scope().module_variableA = value
+			scope.module_variableA = value
+	# expose moduleA's members
+	return { RapydWeb: RapydWeb, Controller: Controller ,scope:scope}
+
+def moduleB ():
+	# import moduleA
+	core = module( moduleA )
+	# set module moduleA's debug to True
+	console.log('\t[moduleB] set moduleA"s debug mode to True')
+	core.RapydWeb.prototype.debug = True
+	# import classes and variables from moduleA
+	RapydWeb,  Controller ,scope_A = core.RapydWeb, core.Controller, core.scope
+
+	# inherited from moduleA's Controller
+	class BlogController( Controller ):		pass
+	class ModController( Controller ):
+		def get_module_variableA(self):
+			console.log("\t[moduleB][ModController][Get] module_variableA = ",scope_A.module_variableA)
+		def set_module_variableA(self,value):
+			console.log("\t[moduleB][ModController][Set] set scopeA's module_variableA to",value)
+			scope_A.module_variableA = value
+	# expose moduleB's members
+	return {BlogController:BlogController,ModController:ModController}
+
+
+
+
+########################################################
+########  T E S T 
+#######################################################
+
+core 			= module( moduleA )
+modA 			= cls( core.RapydWeb, 'init' )
+modA.ctrlr 		= cls( core.Controller, 'init' )
+
+console.log('===== test for class property of RapydWeb inside moduleA =====================')
+console.log('')
+
+console.log('----- change moduleA"s debug mode from main scope-----')
+console.log('\tdefault debug mode of moduleA = ',modA.debug)							# false
+console.log('\techo = ',modA.ctrlr.echo('[moduleA.controller.echo]') or 'no output')		# no output!
+console.log("\tset moduleA's debug mode to True from outer scope of moduleA")
+core.RapydWeb.prototype.debug = True													# turn on output
+console.log('\tcurrent debug mode = ',modA.debug) 										# true
+console.log("\techo = ",modA.ctrlr.echo('[moduleA.controller.echo]' or 'no output'))		# output: RapydWeb
+console.log("\tset moduleA's debug mode to False from outer scope of moduleA")
+core.RapydWeb.prototype.debug = False													# turn off output
+console.log('')
+
+
+console.log('----- change moduleA"s debug mode from moduleB -----')
+console.log('\tbefore initialize moduleB, debug mode = ',modA.debug)
+
+# within module "mvcapp" web change debug mode to True
+app 			= module( moduleB )
+console.log('\tafter initialize moduleB, debug mode = ',modA.debug)
+modB_mod = cls(app.ModController, 'init' )
+console.log("\techo = ",modB_mod.echo('[moduleB.mod.echo]' or 'no output'))
+console.log('')
+console.log('')
+console.log('===== test for module-scope variable =====================')
+console.log('')
+console.log('')
+modA.ctrlr.get_module_variableA()					# default value of module_variableA = 1
+modA.ctrlr.set_module_variableA('A1')				# set moduleA's module_variableA to A1
+console.log("\t[main][Get] module_variableA = ",moduleA.prototype.module_variableA)	# A1 (get from main)
+modA.ctrlr.get_module_variableA()														# A1 (get from moduleA)
+modB_mod.get_module_variableA()															# A1 (get from moduleB)
+modB_mod.set_module_variableA('B1')			# set moduleA's module_variableA to B1 from moduleB
+console.log("\t[main][Get] module_variableA = ",moduleA.prototype.module_variableA) 	# B1 (get from main)
+modB_mod.get_module_variableA()															# B1 (get from moduleB)
+modA.ctrlr.get_module_variableA()														# B1 (get from moduleA)
+modB_mod.set_module_variableA('B2')			# set moduleA's module_variableA to B2 from moduleB
+console.log("\t[main][Get] module_variableA = ",moduleA.prototype.module_variableA) # B2 (get from main)
+modB_mod.get_module_variableA()														# B2 (get from moduleB)
+modA.ctrlr.get_module_variableA()	 												# B2 (get from moduleA)

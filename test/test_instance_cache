@@ -1,0 +1,164 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+def setPythonDefaultProp(fn):
+	fn.__name__ = fn.name
+	if not (fn.constructor.name in ['Object','Function']):fn.__class__ = fn.constructor.name
+	else:fn.func_name = fn.name
+
+
+def defineClassProperties(cls):
+	defineClassProperties.__name__ = defineClassProperties.name
+	cls.prototype.__classproperty_setted__ = False
+	tmp = eval('new cls("defineClassProperties")')
+	if not cls.prototype.__classproperty_setted__:
+		def getter(_cls, k):
+			def wrapper():
+				return _cls.prototype[k]
+			return wrapper
+		def setter(_cls, k):
+			def wrapper(value):
+				_cls.prototype[k] = value
+			return wrapper
+		### for easy access
+		### transform class.prototype.method into class.method
+		# notice: this behavior is different from staticmethod
+		# 		  what it does is only reference class.prototype.method into class.method, not static method
+		#		  in staticmethod specify call reference is necessary eg: class.method(self,args)
+		#		  but non-staticmethod not
+		#
+		# 		  another difference is that: rapydscript compile static methods into class.method
+		#									  non static methods into class.prototype.method
+		#
+		for k,v in dict.items(cls.prototype):
+			cls.__defineGetter__(k, getter(cls, k))
+			cls.__defineSetter__(k, setter(cls, k))
+		for k, v in dict.items(tmp):
+			if not(type(v) == 'function'):
+				console.log('define class property',k, v)
+				cls.prototype[k] = v
+				cls.__defineGetter__(k, getter(cls, k))
+				cls.__defineSetter__(k, setter(cls, k))
+		cls.prototype.__classproperty_setted__ = True
+	return cls
+
+
+def super_(cls, instance):
+	def find_class_name(ref,name):
+		if ref.__proto__.__name__ == name: return ref.__proto__
+		else: return find_class_name(ref.__proto__,name)
+	super_name = cls.prototype.__proto__.__name__
+	instance.name = cls.name
+	super_class = find_class_name(instance,super_name)
+	return super_class
+
+
+
+class SuSuper:
+	def __init__(self, instance):
+		if type(instance) == 'object':
+			# successor constructor
+			self.abacwef[instance.name] = instance
+			self.wefe.append(instance)
+
+		# real constructor
+		self.super_var = 'susuper_set'
+		console.log('SuSuper init')
+	def __classproperties__(self):
+		# defining class property
+		self.abacwef = { }
+		self.wefe = []
+	def teset(self):
+		pass
+	def work(self):
+		pass
+
+
+
+class Super(SuSuper):
+	def __init__(self, instance):
+		if type(instance) == 'object':
+			console.log('Super caller = ',self.caller)
+			# successor constructor
+			if isEmpty(self.__instance__[instance.name]): self.__instance__[instance.name] = []
+			self.__instance__[instance.name].append(instance)
+			self.ins.append(instance)
+		# real constructor
+		self.super_var = 'super_set'
+		console.log('Super init')
+
+	def __classproperties__(self):
+		# defining class property
+		self.__instance__ = { }
+		self.ins = []
+	def cacheInstance(self,instance):
+		console.log('cacheInstance',instance)
+		self.__instance__[instance.name] = instance
+	def set_super(self,a):
+		self.super_var = a
+	def pico(self):
+		console.log(self)
+	def echo(self,mode,ref):
+		if mode:
+			console.log(self,ref)
+			console.log('Super')
+
+
+class CssStyle(Super):
+	def __init__(self,init):
+		# constructor
+		self.set_super('css style init')
+		console.log('CssStyle self = ',self)
+
+		#super_(CssStyle, self).__init__(self)
+
+	def __classproperties__(self):
+		# defining class properties
+		self.HTML_BORDER_FAMILY = ['border', 'border-top', 'border-bottom', 'border-left',
+								   'border-right', 'border-width', 'border-style']
+		self.HTML_BACKGROUND_FAMILY = ['background', 'background-color', 'background-image']
+		self.HTML_POSITIONING_FAMILY = ['position', 'left', 'right', 'top', 'bottom', 'z-index',
+										'pos', 'pos_hint', 'float', 'overflow', 'x', 'y', 'z']
+		self.HTML_APPEARANCE_FAMILY = ['width', 'height', 'size', 'size_hint']
+		self.HTML_TEXT_FAMILY = ['font-family', 'font-size', 'color', 'font-weight', 'font-style',
+								 'text-decoration', 'text-align', 'line-height', 'letter-spacing',
+								 'text-indent', 'text-transform', 'vertical-align']
+
+	def echo(self,mode):
+		if mode == 'super':
+			# call super method
+			super_(CssStyle, self).echo(mode,self)
+		else:
+			console.log('CssStyle')
+	def setInstanceInit(self):
+		super_(CssStyle, self).cacheInstance(self)
+	def setSuperConstructorInit(self):
+		super_(CssStyle, self).constructor(self)
+	def set_cssstyle(self):
+		super_(CssStyle, self).super_var ='set from cssstyle'
+		self.super_var = 'set from cssstyle'
+	def setvar(self, v):
+		self.HTML_APPEARANCE_FAMILY.append(v)
+	def set_echo(self,a):
+		self.echo_var = a
+
+
+
+
+
+o = {'abc':123,'ccc':333}
+tmp = o.items()
+for k,v in tmp:
+	console.log(k,v)
+
+
+
+css = CssStyle()
+css.echo()			# output: CssStyle
+css.echo('super')	# output: Super
+
+# access class methods
+CssStyle.echo
+
+
+
+

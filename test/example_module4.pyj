@@ -1,0 +1,266 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+__author__ = 'gordiaknot'
+
+def module(f):
+	tmp = eval('new f')
+	return tmp
+
+@module
+def rapydMVC ():
+	def class_properties (cls, props):
+		if not cls.prototype.__classproperty__:
+			console.log( 'set class properties:::' )
+			for k, v in dict.items( props ):
+				setattr( cls.prototype, k, v )
+				console.log( k, v )
+			cls.prototype.__classproperty__ = True
+
+	class RapydWeb:
+		prototype = ''
+		browser = ''
+		version = '.4'
+		name = ''
+		action = ''
+		current = config = events = initActions = m = c = v = __instance__ = { }
+		debug = False
+		c = ''
+		m = ''
+		v = ''
+
+		def __init__ (self, init):
+			# due to the characteristic of javascript prototype that constructor was called
+			# not only when user instantiate it but also when inheritance from it's sub classes
+			# so we need make a trick to prevent constructor called by its sub class
+			if init:
+				# declare class properties instead of instance properties
+				# for easy access
+				class_properties( RapydWeb,
+								  {
+								  'm': [],
+								  'v': [],
+								  'c': [],
+								  'action': 'temp',
+								  'debug': 'debug',
+								  'components': [],
+								  'config': [],
+								  '__instance__': { }
+								  } )
+				# instance initiate code here '''
+				self.__instance__['RapydWeb'] = self
+
+		def getJamalInstance (self):
+			return eval( JamalInstance )
+
+		def instanceinit (self):
+			self.__instance__['RapydWeb'] = self
+
+		def start (self):
+			pass
+
+		def configure (self):
+			''' initialize all configuration'''
+			pass
+
+		def log (self):
+			console.log( self.log.caller.name, *arguments )
+
+		def error (self):
+			console.error( self.error.caller.name, *arguments )
+
+		def __linkJamalProto__ (self, successor):
+			successor.__proto__ = eval( JamalInstance )
+
+		def __linkMVCMediatorProto__ (self, successor):
+			pass
+
+		# call from it's successor
+		def __actionInit__ (self, hyper_successor, name, sub_successor):
+			self.checkActionsAvailable( name, sub_successor )
+			if not hyper_successor.__actions__[name]: hyper_successor.__actions__[name] = { }
+			self.log( '__actions__ = ', hyper_successor.__actions__ )
+			self.log( 'successor actions = ', sub_successor.actions )
+
+			if not hyper_successor.name == 'View':
+				for action in sub_successor.actions:
+					hyper_successor.__actions__[name][action] = self.actionPropStructure( )
+			else:
+				for action in sub_successor.actions:
+					hyper_successor.__actions__[name][action] = self.viewPropStructure( )
+
+		# call from it's successor
+		def __components_init__ (self, hyper_successor, name, sub_successor):
+			if sub_successor.components:
+				if not hyper_successor.__components__[name]: hyper_successor.__components__[name] = []
+				hyper_successor.__components__[name] = sub_successor.components
+
+		def actionPropStructure (self):
+			r = { 'views': [], 'props': { } }
+			return r
+
+		def viewPropStructure (self):
+			r = { 'views': [], 'props': { } }
+			return r
+
+		def checkActionsAvailable (self, name, successor):
+			self.log( name, successor )
+			self.log( successor.actions )
+			for action in successor.actions:
+				if not successor[action]:
+					self.error( 'actions [{0}] not exists', action )
+					return False
+
+
+				#@Todo :
+				# Garbage collection
+
+	class Controller( RapydWeb ):
+		__actions__ = __components__ = ''
+
+		def __init__ (self, init):
+			# due to the characteristic of javascript prototype that constructor was called
+			# not only when user instantiate it but also when inheritance from it's sub classes
+			# so we need make a trick to prevent constructor called by its sub class
+			if init:
+				# instance initiate code here
+				# change inheritance from class into instance
+				self.__proto__ = RapydWeb.prototype.__instance__['RapydWeb']
+				# for easy access
+				RapydWeb.prototype.__instance__['Controller'] = self
+				self.__classname__ = 'Controller'
+				self.__components__ = { }
+				self.__actions__ = { }
+
+		def init (self, name, successor):
+			'''
+			init alwasys call from its successor:
+
+			originally this scope of self was route to Controller class not instance
+			we need to access Controller instance from its successor instead of Controller class
+			so, we changed the iheritance from class into instance in above __init__ section
+			'''
+			self.__components_init__( self, name, successor )
+			self.__actionInit__( self, name, successor )
+
+		def __getattr__ (self, item):
+			print item
+
+		def __get__ (self, instance, owner):
+			print instance, owner
+
+		def __beforAction (self, f, *args):
+			self.beforeAction( f, args )
+
+		def beforeAction (self, f, *args):
+			pass
+
+		def afterAction (self, f, *args):
+			pass
+
+		def __afterAction (self, f, *args):
+			self.__startRender( f, args )
+
+		def __startRender (self):
+			pass
+
+	class View( RapydWeb ):
+		__actions__ = __components__ = ''
+
+		def __init__ (self, init):
+			# due to the characteristic of javascript prototype that constructor was called
+			# not only when user instantiate it but also when inheritance from it's sub classes
+			# so we need make a trick to prevent constructor called by its sub class
+			if init:
+				# instance initiate code here
+				# change inheritance from class into instance
+				self.__proto__ = RapydWeb.prototype.__instance__['RapydWeb']
+				# for easy access
+				RapydWeb.prototype.__instance__['View'] = self
+				self.__classname__ = 'View'
+				self.__components__ = { }
+				self.__actions__ = { }
+
+		def init (self, name, successor):
+			'''
+			init alwasys call from its successor:
+
+			originally this scope of self was route to Controller class not instance
+			we need to access Controller instance from its successor instead of Controller class
+			so, we changed the iheritance from class into instance in above __init__ section
+			'''
+			self.__components_init__( self, name, successor )
+			self.__actionInit__( self, name, successor )
+
+		def beforeRender (self, f, *args):
+			pass
+
+		def afterRender (self, f, *args):
+			pass
+
+	class Model( RapydWeb ):
+		__components__ = __classname__ = ''
+
+		def __init__ (self, init):
+			# due to the characteristic of javascript prototype that constructor was called
+			# not only when user instantiate it but also when inheritance from it's sub classes
+			# so we need make a trick to prevent constructor called by its sub class
+			if init:
+				# instance initiate code here
+				# change inheritance from class into instance
+				self.__proto__ = RapydWeb.prototype.__instance__['RapydWeb']
+				# for easy access
+				RapydWeb.prototype.__instance__['Model'] = self
+				self.__classname__ = 'Model'
+				self.__components__ = { }
+
+		def init (self, name, successor):
+			'''
+			init alwasys call from its successor:
+
+			originally this scope of self was route to Controller class not instance
+			we need to access Controller instance from its successor instead of Controller class
+			so, we changed the iheritance from class into instance in above __init__ section
+			'''
+			self.__components_init__( self, name, successor )
+
+		def beforeSend (self, f, *args):
+			pass
+
+		def afterSend (self, f, *args):
+			pass
+
+		def beforeSave (self, f, *args):
+			pass
+
+		def afterSaver (self, f, *args):
+			pass
+
+	class Mediator( RapydWeb ):
+		def __init__ (self, init):
+			# due to the characteristic of javascript prototype that constructor was called
+			# not only when user instantiate it but also when inheritance from it's sub classes
+			# so we need make a trick to prevent constructor called by its sub class
+			if init:
+				# instance initiate code here
+				# change inheritance from class into instance
+				self.__proto__ = RapydWeb.prototype.__instance__['RapydWeb']
+				# for easy access
+				RapydWeb.prototype.__instance__['Mediator'] = self
+				self.__classname__ = 'Mediator'
+		def test (self):
+			print 'mediator test'
+		def test2 (self):
+			print 'mediator test2'
+
+	return {RapydWeb:RapydWeb,Controller:Controller,Model:Model,View:View,Mediator:Mediator}
+
+mvcmodule = module(rapydMVC)
+ctr = mvcmodule.Controller
+class BlogController(ctr):
+	def test(self):
+		pass
+
+b = BlogController()
+
+

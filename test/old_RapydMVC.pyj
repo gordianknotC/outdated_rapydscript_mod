@@ -1,0 +1,434 @@
+
+'''
+class Template(View):
+	def __init__(self):
+		pass
+
+class ViewComponent(Template):
+	def __init__(self):
+		pass
+
+class States(ViewComponent):
+	def __init__(self,name,ref,**kwargs):
+		self.background_color = ''
+		self.background_image = ''
+
+class Animation(object):
+	def __init__(self):
+		pass
+
+class Button(ViewComponent):
+
+	def viewCompInit(self):
+		pass
+
+	def addButton(self,instance,group):
+		pass
+
+	def setDefaultName(self,name):
+		pass
+
+class CustomButton(Button):
+	def __init__(self):
+		pass
+
+	def clearbt(self):
+		pass
+
+	def clear(self):
+		pass
+
+	def action(self):
+		pass
+
+'''
+
+
+if 0:
+	console, arguments = ''
+JamalInstance = 'rapyd'
+
+def class_properties(cls,props):
+	if not cls.prototype.__classproperty__:
+		for k,v in dict.items(props):
+			setattr(cls.prototype,k,v)
+		cls.prototype.__classproperty__ = True
+
+
+class RapydWeb(object):
+	prototype = ''
+	browser = ''
+	version = '.4'
+	name = ''
+	action = ''
+	current = config = events = initActions = m = c = v = { }
+	debug = False
+	c = ''
+	m = ''
+	v = ''
+
+	def __init__ (self):
+		pass
+
+	def instanceInit (self):
+		self.instance = self
+
+	def getJamalInstance (self):
+		return eval( JamalInstance )
+
+	def init (self, name, successor):
+		self.instance[name] = successor
+
+	#def __mvcInit__ (self, name, successor):
+	#	self.getJamalInstance( )[name] = successor
+	#	self.__linkJamalProto__( successor )
+
+	def start (self):
+		pass
+
+	def extend (self):
+		# copy reference to target object
+		target = arguments[0], a = 1
+		# extend rapyd itself if only one argument is passed
+		if len( arguments ) == 1: target = self;    a = 0
+		a += 1
+		for i in range( a, len( arguments ) + 1 ):
+			prop = arguments[a]
+			for i in prop:
+				target[i] = prop[i]
+
+		return target
+
+	def configure (self):
+		''' initialize all configuration'''
+		pass
+
+	def log (self):
+		console.log( self.log.caller.name, arguments )
+
+	def error (self):
+		console.error( self.error.caller.name, arguments )
+
+	def __linkJamalProto__ (self, successor):
+		successor.__proto__ = eval( JamalInstance )
+
+	def __linkMVCMediatorProto__ (self, successor):
+		pass
+
+	#@Todo :
+	# Garbage collection
+
+
+rapyd = RapydWeb( )
+rapyd.instanceInit( )
+
+
+class Controller( RapydWeb ):
+	def __init__ (self, rapyd_instance, controller_name):
+		self.__proto__ = rapyd_instance
+		self.__actions = { }
+		self.__components = { }
+
+	def init (self, controller_instance, name, successor):
+		'''
+		init alwasys call from its successor:
+
+		in this scope self was originally direct to Controller class not instance
+		we need to access Controller instance from its successor instead of Controller class
+		so, the following code just replace successor's super instance with controller_intance in which we specified
+		'''
+		successor.__proto__ = controller_instance
+		controller_instance = successor.__proto__
+		controller_instance[name] = self
+
+		controller_instance.__components_init( name, successor )
+		controller_instance.__actionInit( name, successor )
+
+	def __getattr__ (self, item):
+		print item
+
+	def __get__ (self, instance, owner):
+		print instance, owner
+
+	def __actionInit (self, name, successor):
+		self.checkActionsAvailable( name, successor )
+		if not self.__actions[name]: self.__actions[name] = { }
+		self.log( 'pass blog in __actions', self.__actions )
+		self.log( 'successor actions = ', successor.actions )
+		for action in successor.actions:
+			self.__actions[name][action] = self.actionPropStructure( )
+
+	def actionPropStructure (self):
+		r = { 'views': [], 'props': { } }
+		return r
+
+	def checkActionsAvailable (self, name, successor):
+		self.log( name, successor )
+		self.log( successor.actions )
+		for action in successor.actions:
+			if not successor[action]:
+				self.error( 'actions [{0}] not exists', action )
+				return False
+
+	def __components_init (self, name, successor):
+		if successor.components:
+			if not self.__components[name]: self.__components[name] = []
+			self.__components[name] = successor.components
+
+
+	def __beforAction (self, f, *args):
+		self.beforeAction( f, args )
+
+	def beforeAction (self, f, *args):
+		pass
+
+	def afterAction (self, f, *args):
+		pass
+
+	def __afterAction (self, f, *args):
+		self.__startRender( f, args )
+
+	def __startRender (self):
+		pass
+
+
+
+
+
+
+
+
+class View( RapydWeb ):
+	def __init__ (self, rapyd_instance, view_name):
+		self.__proto__ = rapyd_instance
+		self.__actions = { }
+		self.__components = { }
+
+	def init (self, view_instance, name, successor):
+		'''
+		init alwasys call from its successor:
+
+		in this scope self was originally direct to Controller class not instance
+		we need to access Controller instance from its successor instead of Controller class
+		so, the following code just replace successor's super instance with controller_intance in which we specified
+		'''
+		successor.__proto__ = view_instance
+		view_instance = successor.__proto__
+		view_instance[name] = self
+
+		view_instance.__components_init( name, successor )
+		view_instance.__actionInit( name, successor )
+
+	def __components_init (self, name, successor):
+		if successor.components:
+			#if not self.__components[name]: self.__components[name] = []
+			self.__components[name] = successor.components
+
+
+	def viewPropStructure (self):
+		r = { 'views': [], 'props': { } }
+		return r
+
+	def beforeRender (self, f, *args):
+		pass
+
+	def afterRender (self, f, *args):
+		pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class Model( RapydWeb ):
+	def __init__ (self, rapyd_instance, model_name):
+		self.__proto__ = rapyd_instance
+		self.__actions = { }
+		self.__components = { }
+
+	def init (self, model_instance, name, successor):
+		'''
+		init alwasys call from its successor:
+
+		in this scope self was originally direct to Controller class not instance
+		we need to access Controller instance from its successor instead of Controller class
+		so, the following code just replace successor's super instance with controller_intance in which we specified
+		'''
+		successor.__proto__ = model_instance
+		model_instance = successor.__proto__
+		model_instance[name] = self
+
+		model_instance.__components_init( name, successor )
+		model_instance.__actionInit( name, successor )
+
+	def __components_init (self, name, successor):
+		if successor.components:
+			#if not self.__components[name]: self.__components[name] = []
+			self.__components[name] = successor.components
+
+	def beforeSend (self, f, *args):
+		pass
+
+	def afterSend (self, f, *args    ):
+		pass
+
+	def beforeSave (self, f, *args):
+		pass
+
+	def afterSaver (self, f, *args):
+		pass
+
+
+class Mediator( RapydWeb ):
+	def __init__ (self, rapyd_instance, name):
+		self.__proto__ = rapyd_instance
+		self.__actions = { }
+		self.__components = { }
+
+	def init (self, mediator_instance, name, successor):
+		'''
+		init alwasys call from its successor:
+
+		in this scope self was originally direct to Controller class not instance
+		we need to access Controller instance from its successor instead of Controller class
+		so, the following code just replace successor's super instance with controller_intance in which we specified
+		'''
+		successor.__proto__ = mediator_instance
+		mediator_instance = successor.__proto__
+		mediator_instance[name] = self
+
+
+	def test (self):
+		print 'mediator test'
+
+	def test2 (self):
+		print 'mediator test2'
+
+
+class AddressMediator( Mediator ):
+	def __init__ (self, mediator_instance, name):
+		self.init( mediator_instance, name, self )
+
+	def suspendRediret (self):
+		pass
+
+	def redirectTo (self):
+		pass
+
+	def historyNext (self):
+		pass
+
+	def historyPrev (self):
+		pass
+
+	def getHistories (self):
+		pass
+
+	def onAddressChange (self):
+		pass
+
+
+def core_start():
+	pass
+
+#rapyd.m, rapyd.v, rapyd.c, rapyd.mediator = Model( ), View( ), Controller( ), Mediator( )
+rapyd.c = Controller( rapyd, 'c' )
+rapyd.m = Model( rapyd, 'm' )
+rapyd.v = View( rapyd, 'v' )
+rapyd.mediator = Mediator( rapyd, 'mediator' )
+rapyd.mediator.address = AddressMediator( rapyd.mediator, 'address' )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#################################################
+##		I M P L E M E N T A T I O N
+#################################################
+
+# Mediators are components
+# to use it must declare in controller
+class HeaderMediator( Mediator ):
+	def __init__ (self, mediator_instance, name):
+		self.init( mediator_instance, name, self )
+
+	def catchHeader (self, header):
+		pass
+
+	def rewriteHeader (self):
+		pass
+
+
+class ViewMediator( Mediator ):
+	def viewName_to_ControllerActionName (self):
+		'''
+		 bind view to controller action
+		'''
+
+
+class BlogController( Controller ):
+	# you could not put code here
+	actions = ['index', 'viewArticles', 'viewByTags']
+
+	def __init__ (self, controller_instance, blog_name):
+		self.actions = ['index', 'viewArticles', 'viewByTags']
+		self.components = ['modalbox']
+		self.init( controller_instance, blog_name, self )
+
+	def index (self):
+		pass
+
+	def viewArticles (self):
+		pass
+
+	def viewByTags (self):
+		pass
+
+
+class VoclistController( Controller ):
+	actions = ['vocHome', 'vocSentence', 'vocIndex']
+
+	def __init__ (self, controller_instance, name):
+		self.actions = ['vocHome', 'vocSentence', 'vocIndex']
+		self.components = ['modalbox']
+		self.init( controller_instance, name, self )
+
+	def vocIndex (self):
+		pass
+
+	def vocSentence (self):
+		pass
+
+	def vocHome (self):
+		pass
+
+
+
+
+rapyd.c.blog = BlogController( rapyd.c, 'blog' )
+rapyd.c.voclist = VoclistController( rapyd.c, 'voclist' )
+
+
+
+
+
+
+

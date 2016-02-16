@@ -1,0 +1,72 @@
+
+'''
+    Tow issues about _$rapyd$_bind and anonymous class function:
+    consider the following code:
+
+'''
+
+class Logger:
+	def log(self,*args):
+		if self.log.caller:
+			caller_name = '['+self.log.caller.name+']'
+			args.insert(0,caller_name)
+		console.log( *args )
+
+	def log_caller(self,*args):
+		self.log(*args)
+
+logger = Logger()
+logger.log()				# output	:[]
+logger.log_caller()			# output	:[]
+							# should be	:[log_caller]
+							# 			caller reference was mis-switched from
+							#			logger.log_caller to _rapyd_bind generated wrapper
+def test():
+	logger = Logger()
+	logger.log()			# output: [test]
+
+test()
+
+
+
+'''
+	1/ caller reference was miswitched inside _$rapyd$_bind
+
+    When invoking logger.log through logger.log_caller, we actually calling it, through a mediator, _$rapyd$_bind.
+    In this process_general_config of mediating between two functions, the intended caller of logger.log was miswitched from
+    logger.log_caller(ret.orig.caller..... see the _$rapyd$_bind code below) to _$rapyd$_bind generated wrapper
+    'ret'. When calling logger.log through logger.log_caller, we want the actual caller of logger.log to be
+    logger.log_caller not a _$rapyd$_bind generated wrapper!
+
+    to solve it assign re.orig.caller to fn.caller.
+'''
+
+
+'''
+	2/ class functions in rapydscript was default to anonymous function
+
+	By default, rapydscript use anonymous function as class function. It's ok in most cases, but what if we want
+	to access class function name? In Javascript , anonymous function name attribute is readonly and always keep empty.
+	So if we use anonymous function as class function, we have no chance to access it's class function name!
+'''
+'''
+by default rapydscript generated class function by assigning anonymous function
+'''
+Logger.prototype.log = function (){..)	#	<-- anonymous function
+										# 	function name attribute is readonly and alwaays keep empty
+'''
+if we try to access function name , we would get an empty output
+'''
+console.log(logger.log.name)			# output: ''	<-- name attribute in anonymous function are always empty
+console.log(logger.log_caller.name)		# output: ''	<-- name attribute in anonymous function are always empty
+
+
+'''
+what if we change the anonymous function to a named function
+'''
+Logger.prototype.log = function log(){..)
+console.log(logger.log.name)				# output: 'log'
+console.log(logger.log_caller.name)			# output: 'log_logger'
+
+
+

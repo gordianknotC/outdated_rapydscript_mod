@@ -1,0 +1,97 @@
+# todo implementations:: already implemented, need further test
+# 1/ pass generated custom component tag to Rapydscript or html
+text = verbatim_line(p)
+javascript = verbatim(script(type='text/javascript'))
+SetComponents = code_block(script(type='text/rapydml_component') , 'rapydscript {tempfile} -b -m && tempfile = "rapydcomp_button_squares.pyj", another_var = "another" ' , 'plugin(gencode)')
+rapydscript = code_block( script(type='text/javascript') , 'rapydscript {tempfile} -p -m && tempfile = "__rapydscript.pyj", another_var = "another" ')
+SetComponents:
+	Square[Rectangle]:
+		id: square
+		html_id: 'square[id=square]'
+		state: 'left_top'
+		background_color: '#223399'
+		width: '44'
+		height: '44'
+
+	CustomButton[Button]:
+		id: bt1
+		html_id: 'custombutton[id*=custom_bt]'
+		state: 'left_top'
+		on_press: self.set_state(square)
+		actions:
+			def set_state(self,square):
+				def wrapper():
+					square.state = self.state
+					if self.state in ['left_top','left_bottom']:
+						square.x = self.x
+						square.y = self.y
+				return wrapper
+
+	States:
+		target: square
+		state:
+			name: 'left_top'
+			text: 'left_top'
+			background_color: '#ff1122'
+		state:
+			name: 'left_bottom'
+			text: 'left_bottom'
+			background_color: '#1122ff'
+		state:
+			name: 'right_top'
+			pos: root.getCompById('custom_bt3','pos')
+			text: ' right_top'
+			background_color: '#22ff11'
+		state:
+			name: 'right_bottom'
+			text: ' right_bottom'
+			background_color: '#33aa00'
+			Animation:
+				pos: root.getCompById('custom_bt4','pos')
+				size:'w','h'
+				color:'#fa2'
+				tween:
+					'tween actions'
+
+$foo := "one"
+$bar := "two"
+
+def menuButtons($id,$style,$state):
+	CustomButton($id,$style,$state,viewCompRef='CustomButton',group='A')
+def moviingSqaure($id,$style,$state):
+	Square($id,$style,$state,viewCompRef='movingSqure')
+
+script(type='text/javascript',src='lib/baselib.js')
+script(type='text/javascript',src='RapydMVC.js')
+script(type='text/javascript',src='rapydcomp_button_squares.js')
+script(type='text/javascript',src='lib/jQuery.js')
+
+rapydscript:
+	def document_ready():
+		test1()
+		test2()
+		#test3()
+		test3()
+		#require(essentialibs,essentialibs)
+	#rapydml_component_tag   = 'script[type="text/rapydml_component"]'
+	jQuery(document).ready(document_ready)
+
+div(id = 'main'):
+	h3:
+		'hello world'
+	div(id ='portfolio',mvc='[blog.index]'):
+		div(id = 'container'):
+
+	div(id="navigation"):
+		div(id = "menuL", render_from = 'hidden_menu', mvc='[nav.index]'):
+
+	div(ref='hidden_menu'):
+		moviingSqaure(id='square',style='position: absolute;left: 100;top: 100;width: 55;height: 55;background-color:#334488;',state='left_top')
+		menuButtons(id='custom_bt1',style='position: absolute;left: 100;top: 100;width: 66;height: 66;border: solid 1px;',state='left_top')
+		menuButtons(id='custom_bt2',style='position: absolute;left: 100;top: 300;width: 66;height: 66;border: solid 1px;',state='left_bottom')
+		menuButtons(id='custom_bt3',style='position: absolute;left: 300;top: 100;width: 66;height: 66;border: solid 1px;',state='right_top')
+		menuButtons(id='custom_bt4',style='position: absolute;left: 300;top: 300;width: 66;height: 66;border: solid 1px;',state='right_bottom')
+
+
+
+

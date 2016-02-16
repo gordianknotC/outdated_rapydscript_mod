@@ -1,0 +1,59 @@
+ViewComponent = RapydMVC.UiKit.ViewComponent
+Rectangle = RapydMVC.UiKit.Rectangle
+Button = RapydMVC.UiKit.Button
+States = RapydMVC.UiKit.States
+def e9b0d6_f1d4_4eda_b735_52b135873b86():
+	root = ViewComponent
+	class Square(Rectangle):									# 1
+		def __init__(self):		# 1
+			super_(Square, self).constructor(self)		# 1
+	class CustomButton(Button):									# 8
+		def __init__(self):		# 8
+			super_(CustomButton, self).constructor(self)		# 8
+		def set_state(self,square):		# 14
+			def wrapper():		# 15
+				square.state = self.state		# 16
+				if self.state in ['left_top','left_bottom']:		# 17
+					square.x = self.x		# 18
+					square.y = self.y		# 19
+			return wrapper		# 20
+	square = Square()		# 2
+	bt1 = CustomButton()		# 9
+	square.setData("html_id",'square[id=square]')		# 3
+	square.setData("state",'left_top')		# 4
+	square.setData("background_color",'#223399')		# 5
+	square.setData("width",'44')		# 6
+	square.setData("height",'44')		# 7
+	bt1.setData("html_id",'custombutton[id*=custom_bt]')		# 10
+	bt1.setData("state",'left_top')		# 11
+	bt1.setData("on_press",bt1.set_state(square))		# 12
+	_states = cls(States)		# 21
+	_states.setTarget(square)		# 22
+	_state = _states.addState()		# 23
+	_state.setName('left_top')		# 24
+	_state.setData("text",'left_top')		# 25
+	_state.setData("background_color",'#ff1122')		# 26
+	_state = _states.addState()		# 27
+	_state.setName('left_bottom')		# 28
+	_state.setData("text",'left_bottom')		# 29
+	_state.setData("background_color",'#1122ff')		# 30
+	_state = _states.addState()		# 31
+	_state.setName('right_top')		# 32
+	_state.setData("pos",root.getCompById('custom_bt3','pos'))		# 33
+	_state.setData("text",' right_top')		# 34
+	_state.setData("background_color",'#22ff11')		# 35
+	_state = _states.addState()		# 36
+	_state.setName('right_bottom')		# 37
+	_state.setData("text",' right_bottom')		# 38
+	_state.setData("background_color",'#33aa00')		# 39
+	_anime = _state.setAnime()		# 40
+	_anime.setData("pos",root.getCompById('custom_bt4','pos'))		# 41
+	_anime.setData("size",'w','h')		# 42
+	_anime.setData("color",'#fa2')		# 43
+	_tween = _anime.setTwn()		# 44
+	_tween('tween actions')		# 45
+	__comp_data__ = {'Square': ['Rectangle', {'instance': square, 'id': 'square', 'super_class': Rectangle}], 'CustomButton': ['Button', {'instance': bt1, 'id': 'bt1', 'super_class': Button}]}
+	return __comp_data__
+ViewComponent.addRapydComp(e9b0d6_f1d4_4eda_b735_52b135873b86)
+
+

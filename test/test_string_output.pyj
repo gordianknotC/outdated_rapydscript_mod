@@ -1,0 +1,22 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+
+
+class re:
+	@staticmethod
+	def compile(self,s):
+		regex = eval('new RegExp')
+		regex.compile(s)
+		return regex
+
+try:
+	re.compile('abc')
+
+	r = re()
+	r.compile()
+except:pass
+
+
+
+try: print s  except: s = ''

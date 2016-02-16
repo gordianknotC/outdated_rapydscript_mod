@@ -1,0 +1,117 @@
+abc = {
+    "descriptions": [{
+        "img": [skillimages.alias, skillimages.modo, skillimages.sketchbook + skillimages.photoshop],
+        "text": ["3D Modeling", "3D Rendering", "2D Rendering"],
+        "title": "用聽的看書<br>用聽的學習<br>讓閱讀不受侷限<br>讓學習如影隨形"
+    }, {
+        "img": [skillimages.solidworks, skillimages.vray, ""],
+        "text": ["3D Modeling", "3D Rendering", "2D Rendering"],
+        "title": "網路電話,手繪地圖<br>音聲圖文,暢談無阻"
+    },    //,,
+    // 網路電話,手繪地圖,即時傳輸<br>比肩同樂以書代,音聲圖文,暢言(談)無阻<br>暢話網際,繪聲繪影, ...無阻
+    
+    
+    {
+        "img": [skillimages.solidworks, skillimages.vray, skillimages.sketchbook + skillimages.photoshop],
+        "text": ["3D Modeling", "3D Rendering", "2D Rendering"],
+        "title": ""
+    }, {
+        "img": [skillimages.solidworks, skillimages.modo, skillimages.sketchbook + skillimages.photoshop],
+        "text": ["3D Modeling", "3D Rendering", "2D Rendering"],
+        "title": "30~60度即時仰角<br>遠近操作皆宜<br>視訊功能上掀式直覺式操作,貼近您的心"
+    }, {
+        "img": [skillimages.solidworks, skillimages.modo, skillimages.sketchbook + skillimages.photoshop],
+        "text": ["3D Modeling", "3D Rendering", "2D Rendering"],
+        "title": "耳機<BR>手環<BR>MP3"
+    },//mp3手環  內建藍牙耳機<br>樂樂相伴 如影隨形
+    {
+        "img": [skillimages.solidworks, skillimages.modo, skillimages.sketchbook + skillimages.photoshop],
+        "text": ["3D Modeling", "3D Rendering", "2D Rendering"],
+        "title": "音響<br>夜燈<br>MP3"
+    }, {
+        "img": [skillimages.solidworks, skillimages.modo, skillimages.sketchbook + skillimages.photoshop],
+        "text": ["3D Modeling", "3D Rendering", "2D Rendering"],
+        "title": "電動牙刷<br>瑞士刀<br>電鬍刀"
+    }, {
+        "img": [skillimages.modo, skillimages.vray, skillimages.sketchbook + skillimages.photoshop],
+        "text": ["3D Modeling", "3D Rendering", "2D Rendering"],
+        "title": "夜燈<br>收音機<br>繄急照明燈"
+    }, {
+        "img": [skillimages.modo, skillimages.vray, skillimages.sketchbook + skillimages.photoshop],
+        "text": ["3D Modeling", "3D Rendering", "2D Rendering"],
+        "title": "百萬手機設計-入選"
+    }, {
+        "img": [skillimages.modo, skillimages.vray, skillimages.sketchbook + skillimages.photoshop],
+        "text": ["3D Modeling", "3D Rendering", "2D Rendering"],
+        "title": "OIC MP3設計-佳作"
+    }, {
+        "img": [skillimages.modo, skillimages.vray, skillimages.sketchbook + skillimages.photoshop],
+        "text": ["3D Modeling", "3D Rendering", "2D Rendering"],
+        "title": "INTEL PC造型王第三名"
+    }, {
+        "img": ["", "", skillimages.sketchbook + skillimages.photoshop],
+        "text": ["", "", "2D Rendering"],
+        "title": ""
+    }, {
+        "img": [skillimages.unity3d + skillimages.blaze3d, skillimages.booscript + skillimages.monorail + skillimages.jquery, skillimages.reason],
+        "text": ["Web3d app", "Web design", "Arrangement"],
+        "title": ""
+    }, {
+        "img": ["", "", ""],
+        "text": ["", "", ""],
+        "title": ""
+    }, {
+        "img": [skillimages.all, "", ""],
+        "text": ["", "", ""],
+        "title": "專長<BR>工業設計<BR>網頁設計<BR>WEB3D<BR>多媒體電子配樂"
+    }, {
+        "img": ["", "", ""],
+        "text": ["", "", ""],
+        "title": ""
+    }, {
+        "img": ["", "", ""],
+        "text": ["", "", ""],
+        "title": ""
+    }, {
+        "img": ["", "", ""],
+        "text": ["", "", ""],
+        "title": ""
+    }],
+    
+    "skillimages": {
+        "alias": "<img over='images/alias.png' 		src='images/alias_g.png' 		title='3D modeling app:alias studio 2010' />",
+        "modo": "<img over='images/modo.png' 		src='images/modo_g.png' 		title='3D modeling and rendering app:Luxology Modo401'/>",
+        "solidworks": "<img over='images/solidworks.png' 	src='images/solidworks_g.png' title='3D modeling app:Solidworks2009'/>",
+        "photoshop": "<img over='images/photoshop.png' 	src='images/photoshop_g.png' 	title='photoshopCS3'/>",
+        "booscript": "<img over='images/booscript.png' 	src='images/booscript_g.png' 	title='.NET framework language similar to python:booscript'/>",
+        
+        "unity3d": "<img over='images/unity3d.png' 		src='images/unity3d_g.png' 	title='Web3d and game development:unity3d'/>",
+        "blaze3d": "<img over='images/blaze3d.png' 		src='images/blaze3d_g.png' 	title='Web3d app:blaze3d'/>",
+        "vray": "<img over='images/vray.png' 		src='images/vray_g.png' 		title='3D rendering app:vray'/>",
+        "jquery": "<img over='images/jquery.png' 		src='images/jquery_g.png' 	title='javascript framework:jquery'/>",
+        "monorail": "<img over='images/monorail.png' 	src='images/monorail_g.png' 	title='.NET MVC framework:monorail'/>",
+        
+        "flash": "<img over='images/flash.png' 		src='images/flash_g.png' 		title='flash actionscript2.0'/>",
+        "showcase": "<img over='images/showcase.png' 	src='images/showcase_g.png' 	title='autodesk showcase'/>",
+        "sketchbook": "<img over='images/sketchbook.png' 	src='images/sketchbook_g.png' title='autodesk sketchbook pro'/>",
+        "reason": "<img over='images/reason.png'  		src='images/reason_g.png' 	title='electronical music arrangement'/>"
+    
+    },
+    
+    "colors": [					["rgba(15,80,146,1)", "rgba(23,47,71,1)", 	"rgba(23,47,71,1)", 	"rgba(0,0,0,1)", 		"rgba(0,0,0,1)"], 
+								["rgba(190,44,0,1)", "rgba(46,45,42,1)", 	"rgba(0,0,0,.6)", 		"rgba(0,0,0,.6)"], 
+								["rgba(190,44,0,1)", "rgba(227,227,227,1)", "rgba(227,227,227,1)", 	"rgba(227,227,227,1)", 	"rgba(227,227,227,1)"], 
+								["rgba(90,90,94,1)", "rgba(33,33,35,1)", 	"rgba(18,18,19,1)", 	"rgba(18,18,19,1)", 	"rgba(18,18,19,1)"], 
+								["rgba(0,150,220,1)", "rgba(49,58,63,.8)", 	"rgba(227,227,227,1)", 	"rgba(227,227,227,1)", 	"rgba(227,227,227,1)"],
+								 
+								["rgba(130,8,29,1)", "rgba(227,227,227,1)", "rgba(227,227,227,1)", 	"rgba(227,227,227,1)", 	"rgba(227,227,227,1)"], 
+								["rgba(122,122,115,1)", "rgba(227,227,227,1)", "rgba(227,227,227,1)", "rgba(227,227,227,1)", "rgba(227,227,227,1)"],
+								["rgba(235,140,0,1)", "rgba(0,0,0,0)", 		"rgba(0,0,0,0)", 		"rgba(0,0,0,1)", 		"rgba(0,0,0,1)"],
+								["rgba(22,88,123,1)", "rgba(22,88,123,1)", 	"rgba(22,88,123,1)", 	"rgba(0,0,0,1)"], 
+								["rgba(194,49,144,1)", "rgba(0,0,0,0)", 	"rgba(0,0,0,0)", 		"rgba(0,0,0,1)"], 
+								
+								["rgba(114,0,0,1)", "rgba(114,0,0,0)", 		"rgba(114,0,0,1)", 		"rgba(114,0,0,1)"], 
+								["rgba(190,44,0,1)", "rgba(46,45,42,0)", 	"rgba(0,0,0,0)", 		"rgba(0,0,0,0.4)"], 
+								["rgba(190,44,0,1)", "rgba(0,0,0,0)", 		"rgba(0,0,0,0)", 		"rgba(0,0,0,1)"]]
+
+}

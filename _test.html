@@ -1,0 +1,49 @@
+<!-- This page has been auto-generated using RapydML (http://www.pyjeon.com) -->
+<script type='text/rapydml_component'>
+ViewComponent=RapydMVC.UiKit.ViewComponent;Rectangle=RapydMVC.UiKit.Rectangle;Button=RapydMVC.UiKit.Button;States=RapydMVC.UiKit.States;function b771_a9a3_49fb_82f9_a46c2144c994(){var root,square,bt1,_states,_state,_state,_state,_state,_anime,_tween,__comp_data__;root=ViewComponent;var Square = Callable(function Square_(){var self=this;if (arguments[0] == "__inheritance__") return;super_(Square,self).constructor(self)});Square.prototype=new Rectangle("__inheritance__",Square);Square=__defineClassProperties__(Square);var CustomButton = Callable(function CustomButton_(){var self=this;if (arguments[0] == "__inheritance__") return;super_(CustomButton,self).constructor(self)});CustomButton.prototype=new Button("__inheritance__",CustomButton);CustomButton.prototype.set_state=function set_state(square){var self=this;function wrapper(){square.state=self.state;if(_$in_(self.state,["left_top","left_bottom"])){square.x=self.x;square.y=self.y}}return wrapper};CustomButton=__defineClassProperties__(CustomButton);square=new Square;bt1=new CustomButton;square.setData("html_id","square[\\w]*");square.setData("state","left_top");square.setData("background_color","#223399");square.setData("width","44");square.setData("height","44");bt1.setData("html_id","custom.*");bt1.setData("state","left_top");bt1.setData("on_press",bt1.set_state(square));_states=cls(States);_states.setTarget(square);_state=_states.addState();_state.setName("left_top");_state.setData("text","left_top");_state.setData("background_color","#ff1122");_state=_states.addState();_state.setName("left_bottom");_state.setData("text","left_bottom");_state.setData("background_color","#1122ff");_state=_states.addState();_state.setName("right_top");_state.setData("pos",root.getCompById("custom_bt3","pos"));_state.setData("text"," right_top");_state.setData("background_color","#22ff11");_state=_states.addState();_state.setName("right_bottom");_state.setData("text"," right_bottom");_state.setData("background_color","#33aa00");_anime=_state.setAnime();_anime.setData("pos",root.getCompById("custom_bt4","pos"));_anime.setData("size","w","h");_anime.setData("color","#fa2");_tween=_anime.setTwn();_tween("tween actions");__comp_data__={"Square":["Rectangle",{"instance":square,"id":"square","super_class":Rectangle}],"CustomButton":["Button",{"instance":bt1,"id":"bt1","super_class":Button}]};return __comp_data__}ViewComponent.addRapydComp(b771_a9a3_49fb_82f9_a46c2144c994)
+
+</script>
+<script type='text/javascript' src='lib/baselib.js'>
+</script>
+<script type='text/javascript' src='RapydMVC.js'>
+</script>
+<script type='text/javascript' src='rapydcomp_button_squares.js'>
+</script>
+<script type='text/javascript' src='lib/jQuery.js'>
+</script>
+<script type='text/javascript'>
+(function(){
+    function document_ready() {
+
+        test3();	//DEFPRINT(AST_SimpleStatement 5
+    }
+    jQuery(document).ready(document_ready);	//DEFPRINT(AST_SimpleStatement 8
+})();
+
+</script>
+<div id = 'main'>
+	<h3>
+		hello world
+	</h3>
+	<div id ='portfolio' mvc='[blog.index]'>
+		<div id = 'container'>
+		</div>
+	</div>
+	<div id="navigation">
+		<div id = "menuL" render_from = 'hidden_menu' mvc='[nav.index]'>
+		</div>
+	</div>
+	<div ref='hidden_menu'>
+		<Square id='square' style='position: absolute;left: 100;top: 100;width: 55;height: 55;background-color:#334488;' state='left_top' viewCompRef='movingSqure'>
+		</Square>
+		<CustomButton id='custom_bt1' style='position: absolute;left: 100;top: 100;width: 66;height: 66;border: solid 1px;' state='left_top' viewCompRef='CustomButton' group='A'>
+		</CustomButton>
+		<CustomButton id='custom_bt2' style='position: absolute;left: 100;top: 300;width: 66;height: 66;border: solid 1px;' state='left_bottom' viewCompRef='CustomButton' group='A'>
+		</CustomButton>
+		<CustomButton id='custom_bt3' style='position: absolute;left: 300;top: 100;width: 66;height: 66;border: solid 1px;' state='right_top' viewCompRef='CustomButton' group='A'>
+		</CustomButton>
+		<CustomButton id='custom_bt4' style='position: absolute;left: 300;top: 300;width: 66;height: 66;border: solid 1px;' state='right_bottom' viewCompRef='CustomButton' group='A'>
+		</CustomButton>
+	</div>
+</div>
+<!-- ["<Square id='square' style='position: absolute;left: 100;top: 100;width: 55;height: 55;background-color:#334488;' state='left_top' viewCompRef='movingSqure'>", "<CustomButton id='custom_bt1' style='position: absolute;left: 100;top: 100;width: 66;height: 66;border: solid 1px;' state='left_top' viewCompRef='CustomButton' group='A'>", "<CustomButton id='custom_bt2' style='position: absolute;left: 100;top: 300;width: 66;height: 66;border: solid 1px;' state='left_bottom' viewCompRef='CustomButton' group='A'>", "<CustomButton id='custom_bt3' style='position: absolute;left: 300;top: 100;width: 66;height: 66;border: solid 1px;' state='right_top' viewCompRef='CustomButton' group='A'>", "<CustomButton id='custom_bt4' style='position: absolute;left: 300;top: 300;width: 66;height: 66;border: solid 1px;' state='right_bottom' viewCompRef='CustomButton' group='A'>"] -->

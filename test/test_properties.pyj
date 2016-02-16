@@ -1,0 +1,27 @@
+# utf-8
+
+def property(f):
+	def empty():pass
+	ref = f('init')
+	attr = f.name
+	ref.prototype['_$'+attr] = ref.prototype[attr]
+	ref.prototype.__defineSetter__(attr,empty)
+	ref.prototype.__defineGetter__(attr,ref.prototype['_$'+attr])
+
+class ABC:
+	def __init__(self):
+		self.data = [1,2,3,4,5]
+
+	@property
+	def __length__(self,init):
+		if init:return ABC
+		else: return len(self.data)
+
+
+a = ABC()
+a.__length__		# output: 5
+
+
+
+
+

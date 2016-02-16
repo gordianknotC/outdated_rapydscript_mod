@@ -1,0 +1,8 @@
+def document_ready():
+	test1()
+	test2()
+	#test3()
+	test3()
+	#require(essentialibs,essentialibs)
+#rapydml_component_tag   = 'script[type="text/rapydml_component"]'
+jQuery(document).ready(document_ready)

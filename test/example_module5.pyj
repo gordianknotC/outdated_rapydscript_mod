@@ -1,0 +1,120 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import stdlib
+import stdlib2
+def isEmpty (n):
+	if type( n ) == 'object':
+		if len( n ) == 0: return True
+		for key in dict.keys( n ):
+			return False
+		return True
+
+	if type( n ) == 'string':
+		if n.strip( ):return False
+		else:return True
+
+	if n:return False
+	else:return True
+def cls ():
+	tmp = ''
+	for i in range( 1, len( arguments ) ):
+		tmp += 'arguments[' + i + '],'
+	fn = arguments[0]
+	ins = eval( 'new fn(' + tmp[0:-1] + ')' )
+	return ins
+def set_scope(module):
+	def scope(v):
+		m = eval(module)
+		if v:return m.prototype[v]
+		else: return m.prototype
+	return scope
+def module (module):
+	def getAllExcept(lst,module):
+		def wrapper():
+			name = module.name
+			filter = lst
+			tmp = {}
+			m = eval(name).prototype
+			for k,v in dict.items(m):
+				is_k_in_filter = k in filter
+				if not is_k_in_filter:
+					tmp[k] = v
+			return tmp
+		return wrapper
+	if isEmpty( module.prototype ):
+		data = module( )
+		data.ALL = getAllExcept(['ALL','scope'],module)
+		filter = ['arguments','caller','length','name','prototype','__proto__']
+		for key,value in dict.items(data):
+			if key == 'scope':
+				for k,v in dict.items(value):
+					is_k_in_filter = k in filter
+					if not is_k_in_filter:
+						console.log('scope var..',k,v)
+						data[k] = v
+
+		module.prototype = data		# expose module members to module prototype
+		return module.prototype
+	else:
+		return module.prototype
+
+def rapydmvc ():
+	scope = set_scope('rapydmvc')
+	scope.module_variableB 	= 2
+	scope.module_varialbeA 	= 1
+
+	class RapydWeb:
+		def echo(self):
+			if self.debug:
+				console.log('scope = ',scope())
+				console.log('module_variable = ',scope.module_varialbeA)
+	# set debug as class property not instance property
+	RapydWeb.prototype.debug = False
+	class Controller( RapydWeb ):
+		pass
+	class View( RapydWeb ):
+		pass
+	class Model( RapydWeb ):
+		pass
+	class Mediator( RapydWeb ):
+		pass
+	return { RapydWeb: RapydWeb, Controller: Controller, View: View, Model: Model, Mediator: Mediator ,scope:scope}
+
+def mvcapp ():
+	# import module
+	core = module( rapydmvc )
+	core.RapydWeb.prototype.debug = True	# set module 'rapydmvc' debug to True
+	RapydWeb, Mediator, Controller, View = core.RapydWeb, core.Mediator, core.Controller, core.View
+	class ViewMediator( Mediator ):
+		pass
+	class BlogController( Controller ):
+		pass
+	class VoclistController( Controller ):
+		pass
+	class BlogView( View ):
+		pass
+	return {ViewMediator:ViewMediator,BlogController:BlogController,VoclistController:VoclistController,BlogView:BlogView}
+
+core 			= module( rapydmvc )
+rapyd 			= cls( core.RapydWeb, 'init' )
+rapyd.c 		= cls( core.Controller, 'init' )
+rapyd.m 		= cls( core.Model, 'init' )
+rapyd.v 		= cls( core.View, 'init' )
+rapyd.mediator 	= cls( core.Mediator, 'init' )
+
+rapyd.debug # false
+rapyd.c.echo()							# no output!
+core.RapydWeb.prototype.debug = True	# turn on output
+rapyd.debug # true
+rapyd.m.echo()							# output: RapydWeb
+core.RapydWeb.prototype.debug = False	# turn off output
+
+# within module "mvcapp" web change debug mode to True
+app 			= module( mvcapp )
+rapyd.c.blog 	= cls(app.BlogController,'init')
+rapyd.c.voclist = cls(app.VoclistController, 'init' )
+rapyd.c.blog.echo()		# output: RapydWeb
+rapyd.c.voclist.echo()	# output: RapydWeb
+rapyd.debug # true
+
+

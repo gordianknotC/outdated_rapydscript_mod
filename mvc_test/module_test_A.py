@@ -1,0 +1,124 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from Rapydscript_m.IDEfriendly import *
+
+@module
+def moduleA ():
+	scope = set_scope('moduleA')
+	# declare module-scope variables
+	scope.module_variableB 	= 2
+	scope.module_variableA 	= 1
+	# nested module
+	@module
+	def sub_module():
+		scope = set_scope('moduleA.sub_module')
+		scope.sub_module_variable = 'sub'
+		class Sub:
+			def echo(self,s):
+				console.log('[moduleA.sub_module.echo]',s)
+			def get_module_scope_variable(self):
+				return scope.sub_module_variable
+		return {Sub:Sub,scope:scope}
+
+	class RapydWeb:
+		def get_variableA(self):
+			console.log('[moduleA][get_variableA] ',scope.module_variableA)
+		def echo(self,s):
+			if self.debug:
+				return s
+	RapydWeb.prototype.debug = False	# debug mode [class property]
+	class Controller( RapydWeb ):
+		def get_module_variableA(self):
+			# get module scope value => scope().module_variable
+			console.log("\t[moduleA][Controller][Get] module_variableA = ",scope.module_variableA)
+		def set_module_variableA(self,value):
+			console.log("\t[moduleA][Controller][Set] set moduleA's module_variableA to",value)
+			scope.module_variableA = value	# set module scope value => scope().module_variable = xx
+
+	r = RapydWeb()
+	r.get_variableA()
+	# expose moduleA's members
+	return { RapydWeb: RapydWeb, Controller: Controller ,scope:scope,sub_module:sub_module}
+
+@module
+def moduleB ():
+	# import moduleA
+	core = moduleA
+	# set module moduleA's debug to True
+	console.log('\t[moduleB] set moduleA"s debug mode to True')
+	core.RapydWeb.prototype.debug = True
+	# import classes and variables from moduleA
+	RapydWeb,  Controller ,scope_A = core.RapydWeb, core.Controller, core.scope
+
+	# inherited from moduleA's Controller
+	class BlogController( Controller ):		pass
+	class ModController( Controller ):
+		def get_module_variableA(self):
+			# get module scope value => scope().module_variable
+			console.log("\t[moduleB][ModController][Get] module_variableA = ",scope_A.module_variableA)
+		def set_module_variableA(self,value):
+			console.log("\t[moduleB][ModController][Set] set scopeA's module_variableA to",value)
+			scope_A.module_variableA = value # set module scope value => scope().module_variable = xx
+	# expose moduleB's members
+	return {BlogController:BlogController,ModController:ModController}
+
+
+core 			= moduleA
+rapyd 			= cls( core.RapydWeb, 'init' )
+rapyd.c 		= cls( core.Controller, 'init' )
+
+console.log('===== test for class property of RapydWeb inside moduleA =====================')
+console.log('')
+
+console.log('----- change moduleA"s debug mode from main scope-----')
+console.log('\tdefault debug mode of moduleA = ',rapyd.debug)							# false
+console.log('\techo = ',rapyd.c.echo('[moduleA.controller.echo]') or 'no output')		# no output!
+console.log("\tset moduleA's debug mode to True from outer scope of moduleA")
+core.RapydWeb.prototype.debug = True													# turn on output
+console.log('\tcurrent debug mode = ',rapyd.debug) 										# true
+console.log("\techo = ",rapyd.c.echo('[moduleA.controller.echo]' or 'no output'))		# output: RapydWeb
+console.log("\tset moduleA's debug mode to False from outer scope of moduleA")
+core.RapydWeb.prototype.debug = False													# turn off output
+console.log('')
+
+
+console.log('----- change moduleA"s debug mode from moduleB -----')
+console.log('\tbefore initialize moduleB, debug mode = ',rapyd.debug)
+
+# within moduleB , we change debug mode to True
+app 			= module( moduleB )
+console.log('\tafter initialize moduleB, debug mode = ',rapyd.debug)
+rapyd.c.blog 	= cls(app.BlogController,'init')
+rapyd.c.mod = cls(app.ModController, 'init' )
+console.log("\techo = ",rapyd.c.blog.echo('[moduleBblogg.echo]' or 'no output'))
+console.log('')
+console.log('')
+console.log('===== test for module-scope variable =====================')
+console.log('')
+console.log('')
+rapyd.c.get_module_variableA()					# default value of module_variableA = 1
+rapyd.c.set_module_variableA('A1')				# set moduleA's module_variableA to A1
+console.log("\t[main][Get] module_variableA = ",moduleA.prototype.module_variableA)	# A1 (get from main)
+rapyd.c.get_module_variableA()														# A1 (get from moduleA)
+rapyd.c.mod.get_module_variableA()													# A1 (get from moduleB)
+rapyd.c.mod.set_module_variableA('B1')			# set moduleA's module_variableA to B1 from moduleB
+console.log("\t[main][Get] module_variableA = ",moduleA.prototype.module_variableA) # B1 (get from main)
+rapyd.c.mod.get_module_variableA()													# B1 (get from moduleB)
+rapyd.c.get_module_variableA()														# B1 (get from moduleA)
+rapyd.c.mod.set_module_variableA('B2')			# set moduleA's module_variableA to B2 from moduleB
+console.log("\t[main][Get] module_variableA = ",moduleA.prototype.module_variableA) # B2 (get from main)
+rapyd.c.mod.get_module_variableA()													# B2 (get from moduleB)
+rapyd.c.get_module_variableA()
+
+
+
+
+
+
+
+
+
+
+
+
+

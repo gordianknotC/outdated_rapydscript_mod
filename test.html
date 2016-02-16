@@ -1,0 +1,384 @@
+<!-- This page has been auto-generated using RapydML (http://www.pyjeon.com) -->
+<script type='text/rapydml_component'>
+ViewComponent=RapydMVC.UiKit.ViewComponent;Rectangle=RapydMVC.UiKit.Rectangle;Button=RapydMVC.UiKit.Button;States=RapydMVC.UiKit.States;function e84f86e7_7b31_4b84_9593_bb7a9f759646(){var root,square,bt1,_states,_state,_anime,_tween,__comp_data__;root=ViewComponent;function Square(){Square.prototype.__init__.apply(this,arguments)}_$rapyd$_extends(Square,Rectangle);Square.prototype.__init__=function __init__(){var self=this;super_(Square,self).constructor(self)};function CustomButton(){CustomButton.prototype.__init__.apply(this,arguments)}_$rapyd$_extends(CustomButton,Button);CustomButton.prototype.__init__=function __init__(){var self=this;super_(CustomButton,self).constructor(self)};CustomButton.prototype.set_state=function set_state(square){var self=this;function wrapper(){square.state=self.state;if(_$rapyd$_in(self.state,["left_top","left_bottom"])){square.x=self.x;square.y=self.y}}return wrapper};square=new Square;bt1=new CustomButton;square.setData("html_id","square[id=square]");square.setData("state","left_top");square.setData("background_color","#223399");square.setData("width","44");square.setData("height","44");bt1.setData("html_id","custombutton[id*=custom_bt]");bt1.setData("state","left_top");bt1.setData("on_press",bt1.set_state(square));_states=cls(States);_states.setTarget(square);_state=_states.addState();_state.setName("left_top");_state.setData("text","left_top");_state.setData("background_color","#ff1122");_state=_states.addState();_state.setName("left_bottom");_state.setData("text","left_bottom");_state.setData("background_color","#1122ff");_state=_states.addState();_state.setName("right_top");_state.setData("pos",root.getCompById("custom_bt3","pos"));_state.setData("text"," right_top");_state.setData("background_color","#22ff11");_state=_states.addState();_state.setName("right_bottom");_state.setData("text"," right_bottom");_state.setData("background_color","#33aa00");_anime=_state.setAnime();_anime.setData("pos",root.getCompById("custom_bt4","pos"));_anime.setData("size","w","h");_anime.setData("color","#fa2");_tween=_anime.setTwn();_tween("tween actions");__comp_data__={"Square":["Rectangle",{"instance":square,"id":"square","super_class":Rectangle}],"CustomButton":["Button",{"instance":bt1,"id":"bt1","super_class":Button}]};return __comp_data__}ViewComponent.addRapydComp(e84f86e7_7b31_4b84_9593_bb7a9f759646)
+
+</script>
+<script type='text/javascript' src='lib/baselib.js'>
+</script>
+<script type='text/javascript' src='RapydMVC.js'>
+</script>
+<script type='text/javascript' src='rapydcomp_button_squares.js'>
+</script>
+<script type='text/javascript' src='lib/jQuery.js'>
+</script>
+<script type='text/javascript'>
+(function(){
+    var ViewComponent, Rectangle, Button, States;
+    ViewComponent = RapydMVC.UiKit.ViewComponent;
+    Rectangle = RapydMVC.UiKit.Rectangle;
+    Button = RapydMVC.UiKit.Button;
+    States = RapydMVC.UiKit.States;
+    function a3b5ed1_4645_49bc_9fb1_4bd95a8a580b() {
+        var root, bt1, bt2, _states, _state, _anime, _tween, __comp_data__;
+        root = ViewComponent;
+        function CustomButton() {
+            CustomButton.prototype.__init__.apply(this, arguments);
+        }
+        _$rapyd$_extends(CustomButton, Button);
+        CustomButton.prototype.__init__ = function __init__(){
+            var self = this;
+            super_(CustomButton, self).constructor(self);
+        };
+        CustomButton.prototype.clearbt = function clearbt(){
+            var self = this;
+            var bt;
+            var _$rapyd$_Iter0 = self.groups[self];
+            for (var _$rapyd$_Index0 = 0; _$rapyd$_Index0 < _$rapyd$_Iter0.length; _$rapyd$_Index0++) {
+                bt = _$rapyd$_Iter0[_$rapyd$_Index0];
+                if (bt.id !== self.id) {
+                    bt.clear();
+                }
+            }
+        };
+        CustomButton.prototype.clear = function clear(){
+            var self = this;
+            self.state === self.States.default;
+        };
+        CustomButton.prototype.action = function action(){
+            var self = this;
+            var i;
+            for (i = 0; i < 10; i++) {
+                print;
+                123123;
+            }
+        };
+        function SubCustomButton() {
+            SubCustomButton.prototype.__init__.apply(this, arguments);
+        }
+        _$rapyd$_extends(SubCustomButton, Button);
+        SubCustomButton.prototype.__init__ = function __init__(){
+            var self = this;
+            super_(SubCustomButton, self).constructor(self);
+        };
+        SubCustomButton.prototype.clearbt = function clearbt(){
+            var self = this;
+            var bt;
+            var _$rapyd$_Iter1 = self.groups[self];
+            for (var _$rapyd$_Index1 = 0; _$rapyd$_Index1 < _$rapyd$_Iter1.length; _$rapyd$_Index1++) {
+                bt = _$rapyd$_Iter1[_$rapyd$_Index1];
+                if (bt.id !== self.id) {
+                    bt.clear();
+                }
+            }
+        };
+        SubCustomButton.prototype.clear = function clear(){
+            var self = this;
+            self.state === self.States.default;
+        };
+        SubCustomButton.prototype.action = function action(){
+            var self = this;
+            var i;
+            for (i = 0; i < 10; i++) {
+                for (i = 0; i < 10; i++) {
+                    print;
+                    123123;
+                }
+            }
+            super_(GridLayout, self).constructor(self);
+        };
+        function GridLayout() {
+            GridLayout.prototype.__init__.apply(this, arguments);
+        }
+        _$rapyd$_extends(GridLayout, Button);
+        GridLayout.prototype.__init__ = function __init__(){
+            var self = this;
+            super_(GridLayout, self).constructor(self);
+        };
+        GridLayout.prototype.clearbt = function clearbt(){
+            var self = this;
+            var bt;
+            var _$rapyd$_Iter2 = self.groups[self];
+            for (var _$rapyd$_Index2 = 0; _$rapyd$_Index2 < _$rapyd$_Iter2.length; _$rapyd$_Index2++) {
+                bt = _$rapyd$_Iter2[_$rapyd$_Index2];
+                if (bt.id !== self.id) {
+                    bt.clear();
+                }
+            }
+        };
+        GridLayout.prototype.clear = function clear(){
+            var self = this;
+            self.state === self.States.default;
+        };
+        GridLayout.prototype.action = function action(){
+            var self = this;
+            var i;
+            for (i = 0; i < 10; i++) {
+                print;
+                123123;
+            }
+        };
+        bt1 = new CustomButton();
+        bt1 = new CustomButton();
+        bt1.sbt1 = new SubCustomButton();
+        bt1.sbt1 = new SubCustomButton();
+        bt2 = new GridLayout();
+        bt2 = new GridLayout();
+        bt1.setData("custom1", bt1.val1);
+        bt1.setData("custom1", bt1.val1);
+        bt1.setData("custom2", "val2");
+        bt1.setData("custom2", "val2");
+        bt1.setCondition("custom3", {
+            "if_setter": "\"abc\"",
+            "if_con": [ self.state, " == ", "'default'" ],
+            "else_setter": "'green'",
+            "if_setted": ""
+        });
+        bt1.setCondition("custom3", {
+            "if_setter": "\"abc\"",
+            "if_con": [ self.state, " == ", "'default'" ],
+            "else_setter": "'green'",
+            "if_setted": ""
+        });
+        bt1.setData("html_id", css("CustomButton[ref]"));
+        bt1.setData("html_id", css("CustomButton[ref]"));
+        bt1.setData("state", bt1.default_state);
+        bt1.setData("state", bt1.default_state);
+        bt1.setData("on_press", bt1.action());
+        bt1.setData("on_press", bt1.action());
+        bt1.setData("on_release", bt1.clear);
+        bt1.setData("on_release", bt1.clear);
+        bt1.sbt1.setData("custom1", bt1.sbt1.val1);
+        bt1.sbt1.setData("custom1", bt1.sbt1.val1);
+        bt1.sbt1.setData("custom2", "val2");
+        bt1.sbt1.setData("custom2", "val2");
+        bt1.sbt1.setCondition("custom3", {
+            "if_setter": "\"abc\"",
+            "if_con": [ self.state, " == ", "'default'" ],
+            "else_setter": "'green'",
+            "if_setted": ""
+        });
+        bt1.sbt1.setCondition("custom3", {
+            "if_setter": "\"abc\"",
+            "if_con": [ self.state, " == ", "'default'" ],
+            "else_setter": "'green'",
+            "if_setted": ""
+        });
+        bt1.sbt1.setData("html_id", css("CustomButton[ref]"));
+        bt1.sbt1.setData("html_id", css("CustomButton[ref]"));
+        bt1.sbt1.setData("state", bt1.sbt1.default_state);
+        bt1.sbt1.setData("state", bt1.sbt1.default_state);
+        bt1.sbt1.setData("on_press", bt1.sbt1.action());
+        bt1.sbt1.setData("on_press", bt1.sbt1.action());
+        bt1.sbt1.setData("on_release", bt1.sbt1.clear);
+        bt1.sbt1.setData("on_release", bt1.sbt1.clear);
+        _states = cls(States);
+        _states = cls(States);
+        _states.setTarget(bt1);
+        _states.setTarget(bt1);
+        _state = _states.addState();
+        _state = _states.addState();
+        _state.setName("default" | "onPress");
+        _state.setName("default" | "onPress");
+        _state = _states.addState();
+        _state = _states.addState();
+        _state.setName("hold" | "clear");
+        _state.setName("hold" | "clear");
+        _state = _states.addState();
+        _state = _states.addState();
+        _state.setCondition("background_color", {
+            "if_setter": "'bg'",
+            "if_con": [ _state.state, " == ", "'default'" ],
+            "else_setter": "'green'",
+            "if_setted": "background_color"
+        });
+        _state.setCondition("background_color", {
+            "if_setter": "'bg'",
+            "if_con": [ _state.state, " == ", "'default'" ],
+            "else_setter": "'green'",
+            "if_setted": "background_color"
+        });
+        _state.setData("background_image", "bg");
+        _state.setData("background_image", "bg");
+        _state.setName(stateNaming);
+        _state.setName(stateNaming);
+        _state.setData("customAttr", customeAttr);
+        _state.setData("customAttr", customeAttr);
+        _state.setCondition("setattr", {
+            "else_clause": {
+                "setted": bt1.name,
+                "pass": "",
+                "setter": "'final'"
+            },
+            "elif_clause": [ {
+                "setted": _state.name,
+                "pass": "",
+                "condition": [ _state.state, " == ", "'ccc'" ],
+                "setter": "'anaother';"
+            }, {
+                "setted": bt1.name,
+                "pass": "",
+                "condition": [ "_state.state = 'ddd'" ],
+                "setter": "'anoather elif';"
+            } ],
+            "if_clause": {
+                "setted": _state.name,
+                "pass": "",
+                "condition": [ _state.state, " == ", "'aaa'" ],
+                "setter": "'pressed';"
+            }
+        });
+        _state.setCondition("setattr", {
+            "else_clause": {
+                "setted": bt1.name,
+                "pass": "",
+                "setter": "'final'"
+            },
+            "elif_clause": [ {
+                "setted": _state.name,
+                "pass": "",
+                "condition": [ _state.state, " == ", "'ccc'" ],
+                "setter": "'anaother';"
+            }, {
+                "setted": bt1.name,
+                "pass": "",
+                "condition": [ "_state.state = 'ddd'" ],
+                "setter": "'anoather elif';"
+            } ],
+            "if_clause": {
+                "setted": _state.name,
+                "pass": "",
+                "condition": [ _state.state, " == ", "'aaa'" ],
+                "setter": "'pressed';"
+            }
+        });
+        _anime = _state.setAnime();
+        _anime = _state.setAnime();
+        _anime.setData("pos", x, y);
+        _anime.setData("pos", x, y);
+        _anime.setData("size", w, h);
+        _anime.setData("size", w, h);
+        _anime.setData("color", c);
+        _anime.setData("color", c);
+        _tween = _anime.setTwn();
+        _tween = _anime.setTwn();
+        _tween(xx);
+        _tween(xx);
+        bt2.setData("custom1", bt2.val1);
+        bt2.setData("custom1", bt2.val1);
+        bt2.setData("custom2", "val2");
+        bt2.setData("custom2", "val2");
+        bt2.setData("html_id", css("CustomButton[ref]"));
+        bt2.setData("html_id", css("CustomButton[ref]"));
+        bt2.setData("state", bt2.default_state);
+        bt2.setData("state", bt2.default_state);
+        bt2.setData("on_press", bt2.action());
+        bt2.setData("on_press", bt2.action());
+        bt2.setData("on_release", bt2.clear);
+        bt2.setData("on_release", bt2.clear);
+        _states = cls(States);
+        _states = cls(States);
+        _states.setTarget(css);
+        _states.setTarget(css);
+        _state = _states.addState();
+        _state = _states.addState();
+        _state.setName("default" | "onPress");
+        _state.setName("default" | "onPress");
+        _state = _states.addState();
+        _state = _states.addState();
+        _state.setName("hold" | "clear");
+        _state.setName("hold" | "clear");
+        _state = _states.addState();
+        _state = _states.addState();
+        _state.setData("background_color", "bg");
+        _state.setData("background_color", "bg");
+        _state.setData("background_image", "bg");
+        _state.setData("background_image", "bg");
+        _state.setName(stateNaming);
+        _state.setName(stateNaming);
+        _state.setData("customAttr", customeAttr);
+        _state.setData("customAttr", customeAttr);
+        _state.setCondition("setAttr", {
+            "if_setter": "'pressed'",
+            "if_con": [ _state.state, " == ", "'aaa'" ],
+            "else_setter": "'abc'",
+            "if_setted": _state.name
+        });
+        _state.setCondition("setAttr", {
+            "if_setter": "'pressed'",
+            "if_con": [ _state.state, " == ", "'aaa'" ],
+            "else_setter": "'abc'",
+            "if_setted": _state.name
+        });
+        _anime = _state.setAnime();
+        _anime = _state.setAnime();
+        _anime.setData("pos", x, y);
+        _anime.setData("pos", x, y);
+        _anime.setData("size", w, h);
+        _anime.setData("size", w, h);
+        _anime.setData("color", c);
+        _anime.setData("color", c);
+        _tween = _anime.setTwn();
+        _tween = _anime.setTwn();
+        _tween(xx);
+        _tween(xx);
+        __comp_data__ = {
+            "SubCustomButton": [ "Button", {
+                "instance": "bt1.sbt1",
+                "id": "bt1.sbt1",
+                "super_class": Button
+            }, {
+                "instance": "bt1.sbt1",
+                "id": "bt1.sbt1",
+                "super_class": Button
+            } ],
+            "GridLayout": [ "Button", {
+                "instance": bt2,
+                "id": "bt2",
+                "super_class": Button
+            }, {
+                "instance": bt2,
+                "id": "bt2",
+                "super_class": Button
+            } ],
+            "CustomButton": [ "Button", {
+                "instance": bt1,
+                "id": "bt1",
+                "super_class": Button
+            }, {
+                "instance": bt1,
+                "id": "bt1",
+                "super_class": Button
+            } ]
+        };
+        return __comp_data__;
+        ViewComponent.addRapydComp(a3b5ed1_4645_49bc_9fb1_4bd95a8a580b);
+    }
+})();
+
+</script>
+<div id = 'main'>
+	<h3>
+		hello world
+	</h3>
+	<div id ='portfolio' mvc='[blog.index]'>
+		<div id = 'container'>
+		</div>
+	</div>
+	<div id="navigation">
+		<div id = "menuL" render_from = 'hidden_menu' mvc='[nav.index]'>
+		</div>
+	</div>
+	<div ref='hidden_menu'>
+		<Square id='square' style='position: absolute;left: 100;top: 100;width: 55;height: 55;background-color:#334488;' state='left_top' viewCompRef='movingSqure'>
+		</Square>
+		<CustomButton id='custom_bt1' style='position: absolute;left: 100;top: 100;width: 66;height: 66;border: solid 1px;' state='left_top' viewCompRef='CustomButton' group='A'>
+		</CustomButton>
+		<CustomButton id='custom_bt2' style='position: absolute;left: 100;top: 300;width: 66;height: 66;border: solid 1px;' state='left_bottom' viewCompRef='CustomButton' group='A'>
+		</CustomButton>
+		<CustomButton id='custom_bt3' style='position: absolute;left: 300;top: 100;width: 66;height: 66;border: solid 1px;' state='right_top' viewCompRef='CustomButton' group='A'>
+		</CustomButton>
+		<CustomButton id='custom_bt4' style='position: absolute;left: 300;top: 300;width: 66;height: 66;border: solid 1px;' state='right_bottom' viewCompRef='CustomButton' group='A'>
+		</CustomButton>
+	</div>
+</div>
+<!-- ["<Square id='square' style='position: absolute;left: 100;top: 100;width: 55;height: 55;background-color:#334488;' state='left_top' viewCompRef='movingSqure'>", "<CustomButton id='custom_bt1' style='position: absolute;left: 100;top: 100;width: 66;height: 66;border: solid 1px;' state='left_top' viewCompRef='CustomButton' group='A'>", "<CustomButton id='custom_bt2' style='position: absolute;left: 100;top: 300;width: 66;height: 66;border: solid 1px;' state='left_bottom' viewCompRef='CustomButton' group='A'>", "<CustomButton id='custom_bt3' style='position: absolute;left: 300;top: 100;width: 66;height: 66;border: solid 1px;' state='right_top' viewCompRef='CustomButton' group='A'>", "<CustomButton id='custom_bt4' style='position: absolute;left: 300;top: 300;width: 66;height: 66;border: solid 1px;' state='right_bottom' viewCompRef='CustomButton' group='A'>"] -->

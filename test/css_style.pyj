@@ -1,0 +1,128 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+def class_properties (cls, props):
+	if not cls.prototype.__classproperty__:
+		def getter(_cls,k):
+			def wrapper():
+				return _cls.prototype[k]
+			return wrapper
+		def setter(_cls,k):
+			def wrapper(value):
+				_cls.prototype[k] = value
+			return wrapper
+
+		for k,v in dict.items(props):
+			console.log(k,v)
+			cls.prototype[k] = v
+			cls.__defineGetter__(k,getter(cls,k))
+			cls.__defineSetter__(k,setter(cls,k))
+		cls.prototype.__classproperty__ = True
+def classprop_init(f):
+	eval('new f("classprop_init")')
+	return f
+
+
+class Super:
+	def __init__(self):
+		if arguments[0] == 'classprop_init':
+			self.__instance__ = {}
+			class_properties(Super,self)
+		else:
+			pass
+
+@classprop_init
+class CssStyle:
+	def __init__(self, targets):
+		if targets == 'classprop_init':
+			# defining class properties
+			self.HTML_BORDER_FAMILY = ['border', 'border-top', 'border-bottom', 'border-left',
+										   'border-right', 'border-width', 'border-style']
+			self.HTML_BACKGROUND_FAMILY = ['background', 'background-color', 'background-image']
+			self.HTML_POSITIONING_FAMILY = ['position', 'left', 'right', 'top', 'bottom', 'z-index',
+											'pos', 'pos_hint', 'float', 'overflow', 'x', 'y', 'z']
+			self.HTML_APPEARANCE_FAMILY = ['width', 'height', 'size', 'size_hint']
+			self.HTML_TEXT_FAMILY = ['font-family', 'font-size', 'color', 'font-weight', 'font-style',
+									 'text-decoration', 'text-align', 'line-height', 'letter-spacing',
+									 'text-indent', 'text-transform', 'vertical-align']
+			class_properties(CssStyle,self)
+
+		elif targets:
+			# real constructor
+			self.targets = targets
+
+	def setStyle(self, k, v):
+		for target in self.targets:
+			target.style[k] = v
+	def parseStyle(self, styles):
+		styles = styles.split(';')[0:-1]
+		for style in styles:
+			k = style.split(':')[0].strip()
+			v = style.split(':')[1].strip()
+			if k in self.HTML_POSITIONING_FAMILY:
+				if k == 'pos':
+					pos_arr = v.split(',')
+					if len(pos_arr) == 2:
+						x, y = pos_arr
+					elif len(pos_arr) == 3:
+						x, y, z = pos_arr
+						self.setStyle('z-index', z)
+					else:
+						raise 'Invalid pos format: {0}'.format(style)
+
+					self.setStyle('left', x)
+					self.setStyle('top', y)
+
+				elif k == 'pos_hint':
+					pass
+				console.log(k, v)
+			elif k in self.HTML_BACKGROUND_FAMILY:
+				console.log(k, v)
+			elif k in self.HTML_APPEARANCE_FAMILY:
+				if k == 'size':
+					w, h = v.split(',')
+					self.setStyle('width', w)
+					self.setStyle('height', h)
+
+				elif k == 'size_hint':
+					pass
+				console.log(k, v)
+			elif k in self.HTML_BORDER_FAMILY:
+				console.log(k, v)
+			elif k in self.HTML_TEXT_FAMILY:
+				console.log(k, v)
+			else:
+				raise 'Invalid or unsupported Style tag: {0}'.format(k)
+
+			self.setStyle(k, v)
+
+target = jQuery('custombutton#custom_bt1')
+css = CssStyle(target)
+css.parseStyle(	'position: absolute;left: 111;top: 111;width: 77;height: 88;border: solid 1px #ff00ff;background-color:#334400;')
+
+
+target = "jQuery('custombutton#custom_bt1')"
+print('CssStyle.HTML_APPEARANCE_FAMILY:',CssStyle.HTML_APPEARANCE_FAMILY)
+print ('css1 = CssStyle(target)')
+css1 = CssStyle(target)
+print('css1.HTML_APPEARANCE_FAMILY:',css1.HTML_APPEARANCE_FAMILY)
+print('set HTML_APPEARANCE_FAMILY to []')
+CssStyle.HTML_APPEARANCE_FAMILY = []
+print ('css2 = CssStyle(target)')
+css2 = CssStyle(target)
+print ('css2.HTML_APPEARANCE_FAMILY',css2.HTML_APPEARANCE_FAMILY)
+
+"""
+outputs:
+
+CssStyle.HTML_APPEARANCE_FAMILY: 	["width","height","size","size_hint"]
+css1 = CssStyle(target)
+css1.HTML_APPEARANCE_FAMILY: 		["width","height","size","size_hint"]
+
+set HTML_APPEARANCE_FAMILY to 		[]
+
+css2 = CssStyle(target)
+css2.HTML_APPEARANCE_FAMILY:		[]
+
+
+"""
+

@@ -1,0 +1,93 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import console
+import arguments
+import require
+import RegExp
+import stdlib
+import stdlib2
+
+__author__ = 'gordiaknot'
+JamalInstance = 'rapyd'
+
+#customlib = require('./customlib')
+#stdlib = require('./stdlib')
+#stdlib2 = require('./stdlib2')
+
+#console.log('stdlib = ',stdlib)
+#console.log('stdlib2 =- ',stdlib2)
+#console.log('cusomlib = ',customlib)
+
+#dict = stdlib.dict
+
+
+
+
+def genmodule():
+	__classes__ = ['LoggerA','A','B']
+
+	def call_module(instance):
+		def wrapper(value):
+			def sub_wrapper():
+				tmp = ''
+				for i in range(len(arguments)):
+					tmp += 'arguments[' + i + '],'
+				ins = eval('new instance('+tmp[0:-1]+')')
+				return ins
+			return sub_wrapper
+		return wrapper
+
+	for module in __classes__:
+		__classes__.__defineGetter__(module,call_module(eval(module)))
+
+	def class_properties (cls, props):
+		if not cls.prototype.__classproperty__:
+			console.log( 'set class properties:::' )
+			for k, v in dict.items( props ):
+				setattr( cls.prototype, k, v )
+				console.log( k, v )
+			cls.prototype.__classproperty__ = True
+	class LoggerA:
+		def __init__ (self, name):
+
+			class_properties(LoggerA,
+				{
+				'TRACE'			: 'trace',
+				'PRELIMINARY'	: 'preliminary',
+				'FINAL'			: 'final',
+				'TEMP' 			: 'temp',
+				'DEBUG' 		: 'debug',
+				'INFO' 			: 'info',
+				'initialized_list' 	: [],
+				'overall_filter' 	: [],
+				'overall_flag' 		: []
+			})
+			self.name = name
+			self.logger_list = []
+			self.filter = []
+			self.allowed_flag = []
+		def test(self):
+			pass
+		def test2(self):
+			pass
+	class A:
+		def test(self):
+			console.log('A')
+		def test2(self):
+			pass
+
+	class B(A):
+		def test(self):
+			console.log('B')
+
+	return __classes__
+
+
+module = genmodule()
+A = module.LoggerA('logger a')
+B = module.B()
+A.initialized_list.push('A push')
+module.LoggerA().initialized_list.push('module.LoggerA push')
+
+
+

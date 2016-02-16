@@ -1,0 +1,31 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+comp_tags = ['square','custombutton']
+
+attrs = jQuery('body').comments()[0].getElementsByTagName('square')[0].attributes
+for k,v in dict.items(attrs):
+	console.log(k,v)
+
+for node in attrs:
+	console.log(node.nodeName,node.nodeValue)
+
+comp_list = []
+for comp_tag in comp_tags:
+	comps = jQuery('body').comments()[0].getElementsByTagName(comp_tag)
+	for comp in comps:
+		comp_list.append(comp)
+
+console.log(comp_list)
+
+for comp in comp_list:
+	dom = {}
+	for node in comp.attributes:
+		dom[node.nodeName] = node.nodeValue
+	console.log(dom)
+
+
+
+
+
+

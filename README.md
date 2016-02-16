@@ -1,4 +1,4 @@
-RapydScript 改寫
+2016 RapydScript 改寫
 
 所有學習python 的人或多或少都會得上一種病，學了 python 以後就覺得 python 是世界上最好的語言，即然這麼好，為什麼還要用其他的語言？於是 
 python 有各種 不同版本的 implementation，這種現像到了 web 平台一樣出現，剛好當時的我也得了這種病，想寫 web 但不想離開 python， 那個
